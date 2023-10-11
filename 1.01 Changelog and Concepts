@@ -1,0 +1,28 @@
+* Added a Main Menu for the player to navigate before starting the battle
+  -  The player can give the enemy whatever name they want (Except without spaces i couldn't figure that out, maybe a little help on that?)
+  -  By pressing 2 they can go to the options menu where they can change their HP, enemy HP, potion Count, and the amount healed from potions (Customizibility/Debuging! :D)
+  - Pressing 3 exits the program, more so when i accidentlly run it but it's defintely useful (And it's something to make the main menu less boring)
+* Fixed a bug where certain integers would suffer from memory overflow (freezeChance and potionCount specifically, more could be affected, dont know why those two specifically but defining them to equal 0 fixed it)
+
+
+Concepts:
+Magic Spell: Aeroga, a wind based magic spell, chance to confuse the enemy and cause them to deal damage to themselves. Damage and miss chance would be between Blizzaga and Thundaga
+Magic Spell: Curaga, heals the player but prevents the use of all magic for (3-5?) turns. (Personally dont want the turn cooldown random but its up in the air)
+MP (Magic Points). Prevents the use of magic spam (2 High roll Thundagas rn can currently kill the enemy in 2 turns), would probably need to buff all spells in conjunction to another idea
+    -  Can be customized in the options menu for more/less total MP
+Thundaga Status Effect: Currently stuck between a paralysis or shocked effect where the enemy will miss attacks more often or their attacks deal less damage overall
+Ether (Item): Restores MP allowing for more magic casts and/or dual attacks  (Can't decide on a default value)
+Attack:
+  - Blocking: All attacks have a chance to "block" the incoming attack, allowing you to only take a small percentage of the damage you would've taken (Maybe block 60-100%). Magic spells have no chance to block, giving them risk (This is the part where'd we have to buff them)
+  - Light Attack: Low damage, but has a high block rate, would be good for if you're both low on HP (Deals like 75-150)
+  - Heavy Attack: Higher Damage, lower block rate, useful for if you want to try to dish out attacks but have low MP (But still feeling risky)
+  - Special Attacks: This would have it's own menu and allows special attacks for the cost of MP
+      - Lucky Strike: Attack that has a chance to restore HP or MP, or neither! (MP cost probably moderate but MP gained would be greater than MP used)
+      - Ars Arcanum: High attack that has a higher block rate than even light attacks, but costs about 80% of your MP)
+      - Sonic Blade: This medium damage attack has a unique property where you can use it, deal damage, but instead of the enemy acting afterwards, it's still your turn (It's just so fast, takes maybe 25-50% of your MP)
+      - Zantesuken: Damage can be super duper low (Like literally 1-10 damage) but has a (1-3?)% chance to instantly KO the opponent (Probably be easiest to just set their HP to 0 instead of subtraction, MP cost is next to nothing maybe like literally 1)
+
+tl:dr still suffering from KH brain rot, i have no creativity, but names are probably the easiest to change in this program
+***REMEMBER we dont need to add ALL these features, Aeroga and Curaga personally i think are the least likely to be added in, maybe if we have extra time to kill
+* also please shout out your own ideas too!
+                  ~ Roxie
