@@ -11,7 +11,7 @@ Magic Spell: Curaga, heals the player but prevents the use of all magic for (3-5
 MP (Magic Points). Prevents the use of magic spam (2 High roll Thundagas rn can currently kill the enemy in 2 turns), would probably need to buff all spells in conjunction to another idea
     -  Can be customized in the options menu for more/less total MP
 Thundaga Status Effect: Currently stuck between a paralysis or shocked effect where the enemy will miss attacks more often or their attacks deal less damage overall
-Ether (Item): Restores MP allowing for more magic casts and/or dual attacks  (Can't decide on a default value)
+Ether (Item): Restores MP allowing for more magic casts and/or special attacks  (Can't decide on a default value)
 Attack:
   - Blocking: All attacks have a chance to "block" the incoming attack, allowing you to only take a small percentage of the damage you would've taken (Maybe block 60-100%). Magic spells have no chance to block, giving them risk (This is the part where'd we have to buff them)
   - Light Attack: Low damage, but has a high block rate, would be good for if you're both low on HP (Deals like 75-150)
