@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include <stdlib.h>
+#include <stdlib.h>     //used for nothing else other than for time.h (files suck + pointless in this case probs) ~ Roxie
 void enemyTurn(int *enemyHP, int *playerHP, int *enemyFreeze, int *enemyBurned, char enemyName[100])
 {
     int enemyBurn = 0;
@@ -19,9 +19,9 @@ void enemyTurn(int *enemyHP, int *playerHP, int *enemyFreeze, int *enemyBurned, 
         {
             int enemyAttack = (rand() % 100);
             if (enemyAttack <= 40)
-            {
+            {           //just when we figured out a solution for enemy name, now we need to find enemy attack names ;^; ~Roxie
                 int enemyDamage = (rand() % 75) + 50;
-                printf("%s used Dark Firaga and dealt %d Damage!\n", enemyName, enemyDamage);
+                printf("%s used Dark Firaga and dealt %d Damage!\n", enemyName, enemyDamage); 
                 *playerHP -= enemyDamage;
                 *enemyHP -= enemyBurn;
             }
@@ -76,7 +76,7 @@ void Magic(int *playerHP,int *enemyHP, int *enemyFreeze, int *enemyBurn, char en
                     printf("Firaga thawed %s out...\n", enemyName);
                     *enemyFreeze = 0;
                 }
-                else if (burnChance < 15)
+                else if (burnChance < 14)       //its 14 and not 15 bc don't forget 0 has value (i always forget) ~Roxie
                 {
                     *enemyBurn = 1;
                     printf("%s has been burned!\n", enemyName);
@@ -90,7 +90,7 @@ void Magic(int *playerHP,int *enemyHP, int *enemyFreeze, int *enemyBurn, char en
                 {
                     int blizzagaDamage = (rand() % 126) + 125;
                     int freezeChance = (rand() % 100);
-                    if (freezeChance <= 14)
+                    if (freezeChance < 14)
                     {
                         printf("\nDealt %d Damage using Blizzaga!\n", blizzagaDamage);
                         printf("%s has been frozen!\n", enemyName);
@@ -114,7 +114,7 @@ void Magic(int *playerHP,int *enemyHP, int *enemyFreeze, int *enemyBurn, char en
             else if (magicMenuChoice == 3)
             {
                 int thundagaChance = (rand() % 100);
-                if (thundagaChance >= 50)
+                if (thundagaChance < 49)
                 {
                     int thundagaDamage = (rand() % 251) + 320;
                     printf("\nDealt %d Damage using Thundaga!\n", thundagaDamage);
@@ -172,13 +172,13 @@ void Items(int *playerHP, int *enemyHP, int *enemyFreeze, int *enemyBurn, int *p
         {
             printf("Please choose a different number\n");
         }
-    } while (itemMenuChoice < 1 || itemMenuChoice > 2);
+    } while (itemMenuChoice < 1 || itemMenuChoice > 2); 
 }
 void mainMenu(int *playerHP,int *enemyHP, int *potionCount,int *healAmount, char enemyName[100])
 {
     int maxPlayerHP = *playerHP;
-    int maxEnemyHP = *enemyHP;
-    int maxPotionCount = *potionCount;
+    int maxEnemyHP = *enemyHP; 
+    int maxPotionCount = *potionCount; //used for end-game statistics, might add more if we decide to track more ~Roxie
     int enemyFreeze = 0 , potionUsed = 0, enemyBurn = 0;
     do
     {
@@ -204,8 +204,8 @@ void mainMenu(int *playerHP,int *enemyHP, int *potionCount,int *healAmount, char
         {
             printf("Please choose a different number.\n");
         }
-    } while (*playerHP >= 0 && *enemyHP >= 0);
-    if (*playerHP < 0)
+    } while (*playerHP >= 0 && *enemyHP >= 0); //should we add a case in the event of a tie? (The enemy kills you then dies of burn damage)?
+    if (*playerHP < 0)                      //in all my testing i only got that to happen once ~Roxie                         
     {
         printf("You lost to %s...\n", enemyName);
         *playerHP = 0;
@@ -219,7 +219,7 @@ void mainMenu(int *playerHP,int *enemyHP, int *potionCount,int *healAmount, char
     }
     printf("Stats: Player HP: %d/%d\t%s's HP: %d/%d\n", *playerHP, maxPlayerHP, enemyName, *enemyHP, maxEnemyHP);
     printf("Potions Used: %d/%d", potionUsed, maxPotionCount);
-}
+}       //include a play again option? unsure of how to do this atm since it'd involve jumping back to the beginning of the main function ~Roxie
 void gameOptions(int *playerHP, int *enemyHP, int *potionCount, int *healAmount)
 {
     int optionChoice = 0;
@@ -230,8 +230,8 @@ void gameOptions(int *playerHP, int *enemyHP, int *potionCount, int *healAmount)
         printf("[2] Max Enemy HP (Currently: %d)\n", *enemyHP);
         printf("[3] Potion Count (Currently: %d)\n", *potionCount);
         printf("[4] Potion Heal Amount (Currently Heals: %dHP)\n", *healAmount);
-        printf("[5] Back\n");
-        scanf("%d", &optionChoice);
+        printf("[5] Back\n");           //i kinda like the printf statements separate instead
+        scanf("%d", &optionChoice);     //of 1 giant printf statement but we can change it if yall want  ~Roxie       
         if (optionChoice == 1)
         {
             printf("Enter new amount for Max player HP: ");
@@ -258,7 +258,7 @@ void gameOptions(int *playerHP, int *enemyHP, int *potionCount, int *healAmount)
         }
         else if (optionChoice == 5)
         {
-            printf("\n\n\n");
+            printf("\n\n\n");   //just kinda a buffer between the lines so its not all cramped, probably need to do more of this ~Roxie
             continue;
         }
         else
@@ -271,19 +271,20 @@ int main(void)
 {
     char enemyName[100];
     int titleChoi = 0, potionCount = 3, healAmount = 200, playerHP = 750, enemyHP = 1000;;
-    srand(time(NULL));
+    //from testing, the values had to be set to 0 to prevent memory overflow (Specifically in blizzagaChance and potionCount, idk why those two specifically ~Roxie)
+    srand(time(NULL)); //sets the seed for the random values based on time
     printf("----------------------------\n");
     printf("\tTERMINAL BATTLE\n");
     printf("----------------------------\n");
     do
     {
         printf("Select a choice! (Type the number corresponding to the option, then press enter)\n");
-        printf("[1] Start Battle\n[2] Options\n[3] Exit\n");
+        printf("[1] Start Battle\n[2] Options\n[3] Exit\n"); //didnt separate this printf statement bc it was so small ~Roxie
         scanf("%d", &titleChoi);
-        if (titleChoi == 1)
+        if (titleChoi == 1)             //we can do switch case if we want, but it doesn't matter ~Roxie
         {
             printf("What is the name of the enemy?\n");
-            scanf("%s", enemyName);
+            scanf("%s", enemyName); //i cannot for the life of me figure out how to include spaces ~Roxie
             printf("Starting the battle!\n\n");
             mainMenu(&playerHP,&enemyHP,&potionCount,&healAmount,enemyName);
         }
