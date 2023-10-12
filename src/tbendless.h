@@ -1,5 +1,18 @@
-#ifndef endless
-#define endless
+#ifndef TERMINAL_BATTLE_ENDLESS_H
+#define TERMINAL_BATTLE_ENDLESS_H
+
+//USED FOR BOOLEAN ONLY - contains information on whether player has a spell
+typedef struct Spells{
+     int firaga;
+     int thundaga;
+     int blizzaga;
+}spellStat;
+
+//amount of each type of potion
+typedef struct Potions{
+     int healthPotions;
+     int manaPotions;
+}potionCount;
 
 //player information
 struct Player{
@@ -9,8 +22,8 @@ struct Player{
      int baseAttack;
      int experience;
      int mana;
-     Spells spells;
-     Potions potions;
+     spellStat spells;
+     potionCount potions;
 
 };
 
@@ -20,7 +33,6 @@ struct enemyComm{
      int damMult;
      int health;
      int base;
-     int attack = base * damMult;
      int freezeStat;
      int burnStat;
      char attackName[100];
@@ -34,26 +46,14 @@ struct enemyBoss{
      int health;
      int base;
      int special;
-     int attack = base * damMult;
-     int specAttack = special * damMult;
      int freezeStat;
      int burnStat;
      char attackName[100];
      char specName[100];
 };
 
-//USED FOR BOOLEAN ONLY - contains information on whether player has a spell
-struct Spells{
-     int firaga;
-     int thundaga;
-     int blizzaga;
-};
-
-//amount of each type of potion
-struct Potions{
-     int healthPotions;
-     int manaPotions;
-};
+//game functions
+void gameIntro();
 
 //functions dealing with common enemies
 void createEnemy();
@@ -67,6 +67,7 @@ void bossAttack();
 void createPlayer();
 void playerAttack();
 void usePotion();
+void upgrade();
 
 
 #endif

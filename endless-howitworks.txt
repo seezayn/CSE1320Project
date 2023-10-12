@@ -1,0 +1,10 @@
+Project Tile: Terminal Battle: Endless Mode
+
+Project Idea:
+* An exciting new mode of Terminal Battle, where you can fight enemies endlessly. See how far you can go and set a new high score!
+* Enemies will come in waves, with boss enemies at regular intervals
+* Enemies will get progressively more difficult to defeat, with increase attack power and health
+* The player will rack up experience with each victory to spend on upgrades
+* This program uses structs, pointers, header files, functions, and rand()
+
+A game mode made by Suhas
