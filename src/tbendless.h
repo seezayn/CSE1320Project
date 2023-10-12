@@ -15,7 +15,7 @@ typedef struct Potions{
 }potionCount;
 
 //player information
-struct Player{
+typedef struct Player{
      char name[100];
      int damageMultiplier;
      int health;
@@ -25,10 +25,10 @@ struct Player{
      spellStat spells;
      potionCount potions;
 
-};
+}player;
 
 //common enemy information
-struct enemyComm{
+typedef struct enemyComm{
      char name[100];
      int damMult;
      int health;
@@ -37,10 +37,10 @@ struct enemyComm{
      int burnStat;
      char attackName[100];
 
-};
+}grunt;
 
 //boss enemy information. includes specialAttack damage
-struct enemyBoss{
+typedef struct enemyBoss{
      char name[100];
      int damMult;
      int health;
@@ -50,7 +50,7 @@ struct enemyBoss{
      int burnStat;
      char attackName[100];
      char specName[100];
-};
+}boss;
 
 //game functions
 void gameIntro();
