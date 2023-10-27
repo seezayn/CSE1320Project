@@ -2,7 +2,8 @@
   -  The player can give the enemy whatever name they want (Except without spaces i couldn't figure that out, maybe a little help on that?)
   -  By pressing 2 they can go to the options menu where they can change their HP, enemy HP, potion Count, and the amount healed from potions (Customizibility/Debuging! :D)
   - Pressing 3 exits the program, more so when i accidentlly run it but it's defintely useful (And it's something to make the main menu less boring)
-* Fixed a bug where certain integers would suffer from memory overflow (freezeChance and potionCount specifically, more could be affected, dont know why those two specifically but defining them to equal 0 fixed it)
+* Remodeled most integers to not be hard-coded but to instead rely on their own integers that can be changed in the options menu
+* Fixed a bug where certain integers would suffer from memory overflow (freezeChance and potionCount specifically, more could be affected, dont know why those two specifically but defining them fixed it)
 
 
 Concepts:
