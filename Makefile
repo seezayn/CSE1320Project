@@ -5,5 +5,5 @@ clean:
 	@echo Cleanup complete!
 run: all
 	./mysolution
-add:
+add: clean
 	git add --all
