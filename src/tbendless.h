@@ -1,75 +1,110 @@
 #ifndef TERMINAL_BATTLE_ENDLESS_H
 #define TERMINAL_BATTLE_ENDLESS_H
 
-//USED FOR BOOLEAN ONLY - contains information on whether player has a spell
-typedef struct Spells{
-     int firaga; //boolean (player has firaga)
-     int thundaga; //boolean (player has thundaga)
-     int blizzaga; //boolean (player has bizaga)
-}spellStat;
+//spells and their probability of success
+typedef struct Spell{
+     char spellName[10];
+     int spellDam;
+     int spellEffect;
+     int spellCost;
+     float spellSucc;
+}spell;
 
-//amount of each type of potion
-typedef struct Potions{
-     int healthPotions; //amount of potions to replenish health
-     int manaPotions; //amount of potions to replenish mana for spells
-}potionCount;
+//amount items and their effectiveness
+typedef struct Item{
+     char itemName[10];
+     int itemEffect;
+     int itemAmount;
+}item;
 
-//player information
-typedef struct Player{
-     char name[100]; //the name the player inputs
-     float damMult; //damage multiplier for player PHYSICAL attacks
-     float spellMult;
-     int health; //player health
-     int baseAttack; //base PHYSICAL attack. multiplied by multiplier for final physical attack output
+typedef struct Attack{
+     char attackName[20];
+     int attackDam;
+     int attackCost;
+     int isHeavy;
+}attack;
+
+typedef struct Action{
+     char actionName[10];
+     int actionEffect;
+     int actionCost;
+     int isHeavy;
+}action;
+
+//entity information
+typedef struct Entity{
+     char name[100]; //entity name
+     int entityType; //0 for player, 1 for enemy, 2 for boss
+     
+     //variable entity data
+     int HP; //current entity health
+     int MP; //current entity mana
+     int isBlock; //boolean for blocking
+
+     //multipliers
+     double damMult; //damage multiplier for entity PHYSICAL attacks
+     double spellMult; //damage multiplier for spells
+
+     //status effects
+     int burnStat; //amount of burn
+     int burnDamage; //burn effect
+     int freezeStat; //amount of freeze
+     int shockStat; //amount of shock
+     int confuseStat; //amount of confusion
+
+     //base data
+     int maxHP; //max entity health
+     int maxMP; //max entity mana
+
+     //nested structures
+     spell spells[5]; //spells the entity has and their damage
+     item items[10]; //items the entity has and their damage
+     attack attacks[10]; //list of attacks the entity has
+
+     //game data
      int experience; //player experience. can be used to upgrade stats or unlock spells
-     int mana; //player mana. constains the amount of spells the player can use
-     spellStat spells; //boolean states describing whether player can use a spell. can be unlocked with experience
-     potionCount potions; //amount of the different potions the player has
+     int G; //amount of player currency
+     int levels; //amount of levels the player has defeated
+     int waves; //amount of waves the player has defeated
 
-}player;
+}entity;
 
-//common enemy information
-typedef struct enemyComm{
-     char name[100]; //enemy name. randomly selected from a text file
-     int damMult; //damage multiplier for enemy. increases with every wave
-     int health; //enemy health
-     int baseAttack; //base attack. multiplied by damage multiplier
-     int freezeStat; //boolean status effect of the enemy freeze.
-     int burnStat; //boolean status effect of the enemy burn
-     char attackName[100]; //name of the enemy attack.
-
-}grunt;
-
-//boss information. includes specialAttack damage
-typedef struct enemyBoss{
-     char name[100]; //boss name. randomly selected from a text file
-     int damMult; //damage multiplier for boss. increases with every wave
-     int health; //boss health
-     int baseAttack; //base attack. multiplied by damage multiplier
-     int special; //boss special attack damage
-     int freezeStat; //boolean status effect of the boss freeze.
-     int burnStat; //boolean status effect of the boss burn
-     char attackName[100]; //name of the boss attack.
-     char specName[100]; //name of boss special attack
-}boss;
+//cosmetic functions (printing)
+void titleScreen(); //prints the title message of the game
+void printEnemy(); //prints enemy sprite boss sprite from a random selection of files
+void printBoss(); //prints boss sprite from a random selection of files
 
 //game functions
-void gameIntro();
+void statShop(); //status shop between wave ending and beginning
+void loss(); //deals with losing
+void roundFinish(); //deals with the upkeep of defeating an enemy
 
-//functions dealing with common enemies
-void createEnemy();
-void enemyAttack();
+//instantiation
+int createEnemy(); //instantiates values of common enemy
+void createBoss(); //instantiates values of boss enemy
+void createPlayer(char *name, char class); //instantiates player values
 
-//functions dealing with boss enemies
-void createBoss();
-void bossAttack();
+//sequences
+void enemySequence(); //function for the entire sequence of an enemy
+void bossSequence(); //function for the entire sequence of a boss
+void playerSequence(); //function for the entire player move
 
-//functions dealing with player
-void createPlayer(char *name[], char *class[]);
-void playerAttack();
-void useSpell();
-void usePotion();
-void upgrade();
+//menu functions
+void playerMenu(); //prints the menu of options for the player
+void attackMenu();
+void spellMenu();
+void itemMenu();
 
+//status check
+int statusCheck(); //checks status of entity
+
+//attack functions
+void entityAttack(entity attacker, entity victim, int attack);
+
+//spell functions
+void playerSpell(); //function when player uses a spell
+
+//item functions
+void usePotion(); // function when player uses potion
 
 #endif

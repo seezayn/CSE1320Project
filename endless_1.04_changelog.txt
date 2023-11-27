@@ -1,0 +1,13 @@
+NOTE FROM SUHAS
+     First things first, Roxie did an great job creating the functionality of Terminal Battle and exploring different concepts, however there are some shortcomings in the development of Endless Mode.
+     For my own convenience I'm working in the "endless" branch in the github. I'll leave any administrative actions (merging and versions stuff) to Alex and Roxie
+     
+     Here are my goals for the end product of Terminal Battle: Endless Mode
+          * Compartmentalize everything into functions for the overall sequencing of the game. This is essential for Endless Mode to be developed smoothly
+               (I've added a sequencing diagram to the codebase. It's a .canvas type, which can only be opened with the Obsidian application, so I'll try to find a better way to represent the sequencing)
+          * Standardize code between Roxies version and mine (Suhas)
+          * Implement the Upgrade Shop
+          * Implement tracking variables and file storage
+
+CHANGES
+     * Streamlined Roxie's original code for Terminal Battle, organizing everything into functions for easier sequencing

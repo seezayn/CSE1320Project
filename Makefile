@@ -1,9 +1,9 @@
 all:
-	gcc -std=c11 -g -Wall -I../include src/*.c -o ./mysolution -lm
+	gcc -std=c11 -g -Wall -I../include src/*.c -o ./endless -lm
 clean:
-	rm ./mysolution
+	rm ./endless
 	@echo Cleanup complete!
 run: all
-	./mysolution
+	./endless
 add: clean
 	git add --all

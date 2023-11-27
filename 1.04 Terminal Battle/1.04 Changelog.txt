@@ -1,0 +1,60 @@
+* Endless mode has been fully implemented
+	- Stat Upgrade Shop has a total of 24 random stats to raise (Was 9, now 24)
+	- Added an "Instructions Shop" where you can purchase moves/spells that you dont know
+		- This shop changes dynamically, and has a message if you learn everything
+		- Unlike stat upgrade shop, you don't need to spend G to reroll
+	- Regular Enemies get slightly stronger as more rounds progress
+		- Rolling kick gets a chance to shock after round 7
+		- Heat Haze gets a chance to burn after round 5
+		- Enemy gets acces to Harmonic Rhythm (10%) after round 3
+		- After each round, enemy damage is multiplied by 3%
+		- After each round, enemy max HP is multiplied by 10%
+	- G distribution has been adjusted to slightly reasonable levels
+* Similarly to Items Menu: Magic menu and Special Attacks Menu are now also dynamic and will change as more moves/spells become available
+* Added Attack and Magic Multipliers, multiplying the damage they deal by a set amount
+* Added 4 classes to choose from, with one secret class not initially seen by the player
+	- Secret class can be selected by inputting an invalid number in the "Player Options" 5 times in a row
+	- Knight: Higher HP, less MP, has an attack multiplier, No magic spells, All special attakcs,
+	- Mage: Less HP, higher MP, has a magic multiplier, No special attacks, All magic spells
+	- Rogue: A balance between Knight and Mage, No multipliers
+	- Custom: Stats that are determined in options set by the player (Default stats are same as Rogue)
+* Added a new type of opponent called Bosses
+	- These are stronger than regular enemies, has their own separate damage multiplier, HP, etc
+	- Has a unique moveset compared to enemies, these moves are stronger and give more effects
+		- Vampire Stab (20%): Low damage move that heals the boss by 30-50% of damage dealt
+		- Gigantic Beat (20%): Just a large damage move (Think Angel Blow from enemies)
+		- Hellfire (20%): Chance to burn the player
+		- Suikei (15%): Chance to freeze the player for 2-1 turns
+		- Mechical Rhythm (4%): Swaps Boss's HP with Player HP, and player's HP with Boss's
+		- Guillotine (1%):
+			- At round 5: Sets player health to 400 (If they have above 400, otherwise fails)
+			- At round 10: Sets player health to 200 and shocks them
+			- At round 15+: Sets player health to 1, shocks, and confuses the player
+		- Gravity (18%): Deals damage relative to Boss's HP (More HP = Stronger)
+		- Miss (2%)
+	- After each boss round in Endless, boss damage is multiplied by 10%
+	- After each boss round in Endless, boss max HP is multiplied by 25%
+* Added options accordingly for all mentioned features
+	- Can change boss name, damage multiplier, HP
+	- Can change enemy damage multiplier
+	- Adjust Player attack and magic multipliers
+	- How much G the player starts with in endless mode
+* Renamed special moves and magic to avoid possible point deduction
+	- Fireaga = Fire
+	- Blizzaga = Blizzard	
+	- Thundaga = Thunder
+	- Aeroga = Aero
+	- Sonic Blade = Quickdraw
+	- Zantesuken = Critical Hit
+* Reworked the option to name your opponent due to the introduction of bosses
+	 - You can now name each one individually (Player, enemy, boss) or choose all at random
+Cut Content:
+* Spell: Cure
+* PVP Mode
+* Base Attack and Magic Stats
+* Full realization of experience multipliers
+	- Currently only successful Critical Hit decreases experience yield
+* Item: Defense Shield
+	- Would've absorbed x amount of damage
+* Item: Dire Hit
+	- Would've raised attack & magic for x turns
