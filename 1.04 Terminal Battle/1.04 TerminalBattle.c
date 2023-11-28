@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
-#include <stdlib.h>
-#include <math.h>
+#include <time.h>    //rand()
+#include <stdlib.h>    
+#include <math.h>    //used for round()
 #include "options.h"
 #include "endless.h"
 #include "statChoices.h"
-//(rand()%100) + 1; is used throughout the program, this is range 1 - 100 (Inclusive)
+//(rand()%100) + 1; is used throughout the program, this is range 1 - 100 (Inclusive) for precentage calculation
 void bossTurn(int *blocked)
 {
     if (Pl.burned == 1)
     {
-        Pl.HP -= Pl.burnDamage;
+        Pl.HP -= Pl.burnDamage;    //Pl.burnDamage is calculated before bossTurn
         printf("You took %d additional \033[0;31mburn\033[0m damage!\n", Pl.burnDamage);
     }
-    int bossBurn = 0;
-    int maxBossHP = Bo.HP;
+    int bossBurn = 0;    //boss's burn damage
+    int maxBossHP = Bo.HP;        //used for if the boss wins
     int bossConfuseChance = 0;
     int confusedDamage = 0;
     int totalBlockDamage = 0;
@@ -23,15 +23,15 @@ void bossTurn(int *blocked)
     if (Bo.frozen == 1)
     {
         printf("%s has fully \033[0;34mthawed out!\033[0m\n", Bo.name);
-        Bo.frozen = -1;
+        Bo.frozen = -1;    //set to -1 so the boss doesn't move and thaw at once, this is set to 0 at the end of the function
     }
     if (Bo.burned == 1)
     {
-        bossBurn = (rand() % 50) + 25;
+        bossBurn = (rand() % 50) + 25;    //burn damage
     }
     if (Bo.HP <= 0)
     {
-        return;
+        return;        //this skips the boss's turn because they are dead
     }
     else
     {
@@ -48,10 +48,10 @@ void bossTurn(int *blocked)
                 if (furtherMiss > 70)   //This is a 30% chance that they will miss due to shock
                 {
                     printf("%s couldn't attack due to being \033[0;33mshocked!\033[0m\n", Bo.name);
-                    bossAttack = 0;
+                    bossAttack = 0;        //bossAttack = 0 is nothing, only > 0. So all moves fail
                 }
             }
-            if (bossAttack > 0 && bossAttack <= 20)
+            if (bossAttack > 0 && bossAttack <= 20)        //Vampire Stab
             {
                 float bossDamage = round(((rand() % 50) + 100) * Bo.bossDamageMulti);
                 printf("%s used Vampire Stab and dealt %.0f Damage!\n", Bo.name, bossDamage);
@@ -72,16 +72,16 @@ void bossTurn(int *blocked)
                     printf("%s dealt %.0f damage to themselves in \033[0;35mconfusion!\033[0m\n", Bo.name, confusedDamage);
                 }
                 Pl.HP -= bossDamage;
-                float vampireRecovery = (rand() % 75) + 51;
-                vampireRecovery *= 0.01;
+                float vampireRecovery = (rand() % 75) + 51;        //damage recovered %
+                vampireRecovery *= 0.01;                    //multiplied by 0.01 to properly be a percent
                 Bo.HP += (bossDamage * vampireRecovery);
                 printf("%s recovered %.0f HP using Vampire Stab!\n", Bo.name, bossDamage * vampireRecovery);
                 if (Bo.HP > maxBossHP)
                 {
-                    Bo.HP = maxBossHP;
+                    Bo.HP = maxBossHP;        //usual check similar to player to avoid going over max
                 }
             }
-            else if (bossAttack > 20 && bossAttack <= 40)
+            else if (bossAttack > 20 && bossAttack <= 40)        //Gigantic Beat
             {
                 float bossDamage = round(((rand() % 200) + 200) * Bo.bossDamageMulti);
                 printf("%s used Gigantic Beat and dealt %.0f Damage!\n", Bo.name, bossDamage);
@@ -103,7 +103,7 @@ void bossTurn(int *blocked)
                 }
                 Pl.HP -= bossDamage;                
             }
-            else if (bossAttack > 40 && bossAttack <= 60)
+            else if (bossAttack > 40 && bossAttack <= 60)        //Hellfire
             {
                 float bossDamage = round(((rand() % 150) + 125) * Bo.bossDamageMulti);
                 int hellBurn = (rand() % 100) + 1;
@@ -124,18 +124,18 @@ void bossTurn(int *blocked)
                     Bo.HP -= confusedDamage;
                     printf("%s dealt %.0f damage to themselves in \033[0;35mconfusion!\033[0m\n", Bo.name, confusedDamage);
                 }
-                if (hellBurn <= 25)
+                if (hellBurn <= 25)        //25% burn chance
                 {
                     Pl.burned = 1;
                     printf("You have been \033[0;31mburned\033[0m by %s's Hellfire!\n", Bo.name);
                 }
                 Pl.HP -= bossDamage;
             }
-            else if (bossAttack > 60 && bossAttack <= 75)
+            else if (bossAttack > 60 && bossAttack <= 75)            //Suikei
             {
                 float bossDamage = round(((rand() % 200) + 150) * Bo.bossDamageMulti);
                 int suikeiFreeze = (rand() % 100) + 1;
-                int suikenAmount = (rand() % 1) + 1;
+                int suikeiAmount = (rand() % 1) + 1;
                 printf("%s used Suikei and dealt %.0f Damage!\n", Bo.name, bossDamage);
                 if (*blocked == 1)
                 {
@@ -154,26 +154,26 @@ void bossTurn(int *blocked)
                     printf("%s dealt %.0f damage to themselves in \033[0;35mconfusion!\033[0m\n", Bo.name, confusedDamage);
                 }
                 Pl.HP -= bossDamage;
-                if (suikeiFreeze >= 66)
+                if (suikeiFreeze > 66)        //33% chance to freeze
                 {
-                    Pl.frozen = suikenAmount;
+                    Pl.frozen = suikeiAmount;        //frozen for 2-1 turns
                     printf("You have been \033[0;34mfrozen solid\033[0m by %s's Suikei!\n", Bo.name);
                 }
             }
-            else if (bossAttack > 75 && bossAttack <= 79)
+            else if (bossAttack > 75 && bossAttack <= 79)        //Mechanical Rhythm (4%)
             {
                 printf("%s used Mechanical Rhythm and swapped your HP with their HP!\n", Bo.name);
-                int tempPLHP = Pl.HP;
-                int tempBOHP = Bo.HP;
-                Pl.HP = tempBOHP;
-                Bo.HP = tempPLHP;
+                int tempPLHP = Pl.HP;        //temps to store PL and BO HP
+                int tempBOHP = Bo.HP;         //temps to store PL and BO HP
+                Pl.HP = tempBOHP;            //commecing swap
+                Bo.HP = tempPLHP;            //commencing swap
             }
-            else if (bossAttack == 80)
+            else if (bossAttack == 80)        //Guillotine (1%)
             {
-                if (Un.battles <= 5)
+                if (Un.battles <= 5)        //The effect depends on how far you are, more rounds = more drastic
                 {
                     printf("%s used Guillotine ", Bo.name);
-                    if (Pl.HP <= 400)
+                    if (Pl.HP <= 400)        //fails if Pl.HP is over 400
                     {
                         printf("and it failed!\n");
                     }
@@ -183,13 +183,13 @@ void bossTurn(int *blocked)
                         Pl.HP = 400;
                     }
                 }
-                if (Un.battles > 5 && Un.battles <= 9)
+                if (Un.battles > 5 && Un.battles <= 9)        //doesn't check for 200 health since if you're already below 200, you're already in a bad place
                 {
                     printf("%s used Guillotine and left you at very low health and \033[0;33mshocked!\033[0m!\n", Bo.name);
                     Pl.HP = 200;
                     Pl.shocked = 1;
                 }
-                if (Un.battles > 9)
+                if (Un.battles > 9)        //no health check required due to it being impossible to have < 1 HP
                 {
                     printf("%s used Guillotine and left you at critical health, \033[0;33mshocked!\033[0m, and \033[0;35mconfused!\033[0m!\n", Bo.name);
                     Pl.HP = 1;
@@ -197,7 +197,7 @@ void bossTurn(int *blocked)
                     Pl.confused = 1;
                 }
             }
-            else if (bossAttack > 80 && bossAttack <= 98)
+            else if (bossAttack > 80 && bossAttack <= 98)        //Gravity
             {
                 float bossDamage = round((Bo.HP * 0.2)*Bo.bossDamageMulti);                  //the more health the boss has, the greater attack power this has
                 int gravityChance = (rand() % 100) + 1;
@@ -219,20 +219,20 @@ void bossTurn(int *blocked)
                     printf("%s dealt %.0f damage to themselves in \033[0;35mconfusion!\033[0m\n", Bo.name, confusedDamage);
                 }
                 Pl.HP -= bossDamage;
-                if (gravityChance <= 20)
+                if (gravityChance <= 20)        //20% Chance to confuse
                 {
                     Pl.confused = 1;
                     printf("You have been \033[0;35mconfused\033[0m by %s's Gravity!\n", Bo.name);
                 }
             }
-            else
+            else        //2% Chance to just miss, whereas enemy has 5% chance to miss
             {
                 printf("%s missed their attack!\n", Bo.name);
             }
         }
         else
         {
-            if (Bo.frozen >= 1)
+            if (Bo.frozen >= 1)            //frozen calculations
             {
                 printf("%s is \033[0;34mfrozen solid\033[0m for %d more turn", Bo.name, Bo.frozen-1);
                 if (Bo.frozen - 1 == 1)
@@ -262,7 +262,7 @@ void enemyTurn(int *blocked)
 {
     if (Pl.burned == 1)
     {
-        Pl.HP -= Pl.burnDamage;
+        Pl.HP -= Pl.burnDamage;        //Pl.burnDamage is calculated before enemyTurn
         printf("You took %d additional \033[0;31mburn\033[0m damage!\n", Pl.burnDamage);
     }
     int enemyBurn = 0;
@@ -274,15 +274,15 @@ void enemyTurn(int *blocked)
     if (En.frozen == 1)
     {
         printf("%s has fully \033[0;34mthawed out!\033[0m\n", En.name);
-        En.frozen = -1;
+        En.frozen = -1;        //set to -1 to avoid enemy from moving, changed to 0 at the end of the function
     }
     if (En.burned == 1)
     {
-        enemyBurn = (rand() % 50) + 25;
+        enemyBurn = (rand() % 50) + 25;        //burn damage
     }
     if (En.HP <= 0)
     {
-        return;
+        return;        //skips the enemy's turn if they are dead
     }
     else
     {
@@ -292,7 +292,7 @@ void enemyTurn(int *blocked)
             {
                 enemyAttack = (rand() % 100) + 1;
             }
-            else if (Un.battles >= 3)                    //On 4 battles, the enemy will gain access to Harmonic Rhythm
+            else if (Un.battles >= 3)                    //On 4 battles, the enemy will gain access to Harmonic Rhythm (~10%)
             {
                 enemyAttack = (rand() % 110) + 1;
             }
@@ -309,13 +309,13 @@ void enemyTurn(int *blocked)
                     enemyAttack = 0;
                 }
             }
-            if (enemyAttack > 0 && enemyAttack <= 40)
+            if (enemyAttack > 0 && enemyAttack <= 40)            //Rolling Kick
             {
                 float enemyDamage = round(((rand() % 75) + 50) * En.enemyDamageMulti);
                 printf("%s used Rolling Kick and dealt %.0f Damage!\n", En.name, enemyDamage);
                 if (*blocked == 1)
                 {
-                    double blockedDamage = (rand() % 40);
+                    double blockedDamage = (rand() % 40);        //blocks 60%-100% of damage
                     blockedDamage *= 0.01;
                     totalBlockDamage = enemyDamage - enemyDamage*blockedDamage;
                     enemyDamage = enemyDamage * blockedDamage;
@@ -332,7 +332,7 @@ void enemyTurn(int *blocked)
                 if (Un.battles >= 7)        //On 8 battles, Rolling Kick can Shock
                 {
                     int shockChance = (rand() % 100) + 1;
-                    if (shockChance <= 15)
+                    if (shockChance <= 15)        //15% chance to shock
                     {
                         Pl.shocked = 1;
                         printf("You have been \033[0;33mshocked\033[0m by %s's Rolling Kick!\n", En.name);
@@ -348,7 +348,7 @@ void enemyTurn(int *blocked)
                 if (Un.battles >= 5)            //On 6 battles, Heat Haze can burn
                 {
                     int burnChance = (rand() % 100) + 1;
-                    if (burnChance <= 15)
+                    if (burnChance <= 15)        //15% chance to burn
                     {
                         printf("You have been \033[0;31mburned\033[0m by %s's Heat Haze!\n", En.name);
                         Pl.burned = 1;
@@ -372,7 +372,7 @@ void enemyTurn(int *blocked)
                 }
                 Pl.HP -= enemyDamage;
             }
-            else if (enemyAttack > 70 && enemyAttack <=85)
+            else if (enemyAttack > 70 && enemyAttack <=85)        //Angel blow
             {
                 float enemyDamage = round(((rand() % 175) + 175) * En.enemyDamageMulti);
                 printf("%s used Angel Blow and dealt %.0f Damage!\n", En.name, enemyDamage);
@@ -394,14 +394,14 @@ void enemyTurn(int *blocked)
                 }
                 Pl.HP -= enemyDamage;
             }
-            else if (enemyAttack > 85 && enemyAttack <= 100)
+            else if (enemyAttack > 85 && enemyAttack <= 100)        //15% chance to miss
             {
             printf("%s went for an attack but missed!\n", En.name);
             }
-            else if (enemyAttack > 100 && enemyAttack <= 110)           //Activated after 2 rounds
+            else if (enemyAttack > 100 && enemyAttack <= 110)           //Activated on round 4
             {
                 float enemyDamage = round(((rand() % 200) + 1) * En.enemyDamageMulti);               //the wide range of damage is intentional
-                int harmonicStatus = (rand() % 100) + 1;
+                int harmonicStatus = (rand() % 100) + 1;    //80% chance to inflict a status, with each status having a 20% chance individually
                 printf("%s used Harmonic Rhythm and dealt %.0f damage\n", En.name, enemyDamage);
                 if (enemyConfuseChance > 50)
                 {
@@ -411,26 +411,26 @@ void enemyTurn(int *blocked)
                     En.HP -= confusedDamage;
                     printf("%s dealt %.0f damage to themselves in \033[0;35mconfusion!\033[0m\n", En.name, confusedDamage);
                 }
-                if (harmonicStatus >= 0 && harmonicStatus < 20)
+                if (harmonicStatus >= 0 && harmonicStatus < 20)        //20% chance for burn
                 {
                     Pl.burned = 1;
                     printf("You have been \033[0;31mburned\033[0m by %s's Harmonic Rhythm!\n", En.name);
                 }
-                else if (harmonicStatus >= 20 && harmonicStatus < 40)
+                else if (harmonicStatus >= 20 && harmonicStatus < 40)        //20% chance for freeze
                 {
                     Pl.frozen =  (rand() % 3) + 1;
                     printf("You have been \033[0;34mfrozen\033[0m by %s's Harmonic Rhythm!\n", En.name);
                 }
-                else if (harmonicStatus >= 40 && harmonicStatus < 60)
+                else if (harmonicStatus >= 40 && harmonicStatus < 60)    //20% chance for shock
                 {
                     Pl.shocked = 1;
                     printf("You have been \033[0;33mshocked\033[0m by %s's Harmonic Rhythm!\n", En.name);
                 }
-                    else if (harmonicStatus >= 60 && harmonicStatus < 80)
+                    else if (harmonicStatus >= 60 && harmonicStatus < 80)        //20% chance for confuse
                 {
                     Pl.confused = 1;
                     printf("You have been \033[0;35mconfused\033[0m by %s's Harmonic Rhythm!\n", En.name);
-                }
+                }            //20% chance for Harmonic Rhythm to give nothing
                  if (*blocked == 1)
                 {
                     double blockedDamage = (rand() % 40) * 0.01;
@@ -469,12 +469,12 @@ void enemyTurn(int *blocked)
         En.frozen = 0;
     }
 }
-void playerConfusionDamage(float *damage)
+void playerConfusionDamage(float *damage)    //calculates player Confuse Damage, functions go here if Player is confused
 {
     int playerConfuseChance = (rand() % 100) + 1;
-    if (Pl.confused == 1 && playerConfuseChance > 50)
+    if (Pl.confused == 1 && playerConfuseChance > 50)    //50% chance for confusion recoil
     {
-        double confusedDamage = ((rand() % 25) + 25) * 0.01;
+        double confusedDamage = ((rand() % 25) + 25) * 0.01;        //deals 25-50% of damage dealt
         confusedDamage = confusedDamage * *damage;
         round(confusedDamage);
         Pl.HP -= confusedDamage;
@@ -490,27 +490,27 @@ void specialAttacks(int *attackChoice, int *blocked)
     do
     {
         printf("Special Attacks:\n\t\t---Current MP: %d---\n", Pl.MP);
-        for (int i = 1; i <= 4; i++)
+        for (int i = 1; i <= 4; i++)        // i <= 4 due to there being 4 special attacks
         {
-            if (Pl.hasLucky == 1 && already[0] == 0)
+            if (Pl.hasLucky == 1 && already[0] == 0)        //Lucky Strike
             {
                 already[0] = i;
                 back++;
                 printf("[%d] Lucky Strike (Low Damage, HP and MP restoration chance, %d%% Block Rate, %d MP)\n", i, At.luckyBlock, At.luckyMP);
             }
-            else if (Pl.hasQuick == 1 && already[1] == 0)
+            else if (Pl.hasQuick == 1 && already[1] == 0)        //Quickdraw
             {
                 already[1] = i;
                 back++;
                 printf("[%d] Quickdraw (Moderate Damage, skips enemy turn, %d MP)\n", i, At.quickdrawMP);
             }
-            else if (Pl.hasArs == 1 && already[2] == 0)
+            else if (Pl.hasArs == 1 && already[2] == 0)        //Ars Arcanum
             {
                 already[2] = i;
                 back++;
                 printf("[%d] Ars Arcanum (Massive Damage, %d%% Block Rate, %d MP)\n", i, At.arsBlock, At.arsMP);
             }
-            else if (Pl.hasCritHit == 1 && already[3] == 0)
+            else if (Pl.hasCritHit == 1 && already[3] == 0)        //Critical Hit
             {
                 already[3] = i;
                 back++;
@@ -523,7 +523,7 @@ void specialAttacks(int *attackChoice, int *blocked)
     }
     printf("[%d] Back\n",back);
     scanf("%d", &specialChoice);
-    if (Pl.frozen > 1 && specialChoice < back)
+    if (Pl.frozen > 1 && specialChoice < back)        //Player Frozen
     {
         *attackChoice = 4;
         printf("You are still \033[0;34mfrozen solid\033[0m for %d turns!\n", Pl.frozen);
@@ -537,7 +537,7 @@ void specialAttacks(int *attackChoice, int *blocked)
             bossTurn(blocked);
         }
     }
-    else if (Pl.frozen == 1 && specialChoice < back)
+    else if (Pl.frozen == 1 && specialChoice < back)        //Thawing Turn
     {
         *attackChoice = 4;
         printf("You have \033[0;34munthawed from being frozen\033[0m!\n");
@@ -551,7 +551,7 @@ void specialAttacks(int *attackChoice, int *blocked)
             bossTurn(blocked);
         }
     }
-    else if (Pl.shockSucc == 100)
+    else if (Pl.shockSucc == 100)        //30% Chance for shock succession calculated in mainMenu
     {
         if (specialChoice > 0 && specialChoice < back)
         {
@@ -567,7 +567,7 @@ void specialAttacks(int *attackChoice, int *blocked)
             }
         }
     }
-    else if (specialChoice == already[0] && already[0] > 0)
+    else if (specialChoice == already[0] && already[0] > 0)    //Lucky Strike
     {
         if (Pl.MP >= At.luckyMP)
         {
@@ -590,7 +590,7 @@ void specialAttacks(int *attackChoice, int *blocked)
             }
             printf("Dealt %.0f damage using Lucky Strike!\n", luckyAttackDamage);
             int restoreHPMP = (rand() % 100) + 1;
-            if (restoreHPMP <= 25)
+            if (restoreHPMP <= 25)        //25% chance to restore HP only
             {
                 int restoreamoHP = (rand() % 150) + 50;
                 Pl.HP += restoreamoHP;
@@ -600,7 +600,7 @@ void specialAttacks(int *attackChoice, int *blocked)
                 }
                 printf("Restored %d HP!\n",restoreamoHP);
             }
-            else if (restoreHPMP > 25 && restoreHPMP <= 50)
+            else if (restoreHPMP > 25 && restoreHPMP <= 50)        //25% Chance to restore MP only
             {
                 int restoreamoMP = (rand() % 10) + 20;
                 Pl.MP += restoreamoMP;
@@ -610,7 +610,7 @@ void specialAttacks(int *attackChoice, int *blocked)
                 }
                 printf("Restored %d MP!\n", restoreamoMP);
             }
-            else if (restoreHPMP > 50 && restoreHPMP <= 75)
+            else if (restoreHPMP > 50 && restoreHPMP <= 75)        //25% chance for both HP and MP
             {
                 int restoreamoHP = (rand() % 150) + 50;
                 int restoreamoMP = (rand() % 10) + 20;
@@ -628,7 +628,7 @@ void specialAttacks(int *attackChoice, int *blocked)
             }
             else
             {
-                printf("Restored neither HP nor MP...\n");
+                printf("Restored neither HP nor MP...\n");    //25% Chance for neither HP nor MP
             }
             if (Un.bossOrEnemy == 0)
             {
@@ -644,7 +644,7 @@ void specialAttacks(int *attackChoice, int *blocked)
             printf("You don't have enough MP to use Lucky Strike!\n");
         }
     }
-    else if (specialChoice == already[1] && already[1] > 0)
+    else if (specialChoice == already[1] && already[1] > 0)    //Quickdraw
     {
         if (Pl.MP >= At.quickdrawMP)
         {
@@ -653,7 +653,7 @@ void specialAttacks(int *attackChoice, int *blocked)
             float quickdrawDamage = round(((rand() % 200) + 100) * Pl.attackMulti);
             En.HP -= quickdrawDamage;
             printf("Dealt %.0f damage using Quickdraw!\n", quickdrawDamage);
-            playerConfusionDamage(&quickdrawDamage);
+            playerConfusionDamage(&quickdrawDamage); 
             if (Un.bossOrEnemy == 0)
             {
                 printf("%s's turn was skipped!\n", En.name);
@@ -662,13 +662,13 @@ void specialAttacks(int *attackChoice, int *blocked)
             {
                 printf("%s's turn was skipped!\n", Bo.name);
             }
-        }
+        }    //Notice how Quickdraw is just a move that lacks going to enemyTurn or bossTurn, pretty basic
         else
         {
             printf("You don't have enough MP to use Quickdraw!\n");
         }
     }
-    else if (specialChoice == already[2] && already[2] > 0)
+    else if (specialChoice == already[2] && already[2] > 0)    //Ars Arcanum
     {
         if (Pl.MP >= At.arsMP)
         {
@@ -704,14 +704,14 @@ void specialAttacks(int *attackChoice, int *blocked)
             printf("You don't have enough MP to use Ars Arcanum!\n");
         }
     }
-    else if (specialChoice == already[3] && already[3] > 0)
+    else if (specialChoice == already[3] && already[3] > 0)    //Critical Hit
     {
         if (Pl.MP >= At.critHitMP)
             {
             *attackChoice = 4;
             Pl.MP -= At.critHitMP;
             int critHitChance = (rand() % 100) + 1;
-            float critHitDamage = round(((rand() % 2) + 1) * Pl.attackMulti);
+            float critHitDamage = round(((rand() % 2) + 1) * Pl.attackMulti);    //this low range is intentional
             int critHitBlock = (rand()% 100)+ 1;
             if (critHitBlock > 100 - At.critHitBlock)
             {
@@ -723,18 +723,18 @@ void specialAttacks(int *attackChoice, int *blocked)
                 {
                     printf("Critical Hit succeded, dealt %d damage!!\n", En.HP);
                     Pl.expMulti -= 0.25;
-                    En.HP = 0;
+                    En.HP = 0;        //Easiest option available
                     enemyTurn(blocked);
                 }
                 else if (Un.bossOrEnemy == 1)
                 {
                     printf("Critical Hit succeded, dealt %d damage!!\n", Bo.HP);
                     Pl.expMulti -= 0.2;
-                    Bo.HP = 0;
+                    Bo.HP = 0;          //Easiest option available
                     bossTurn(blocked);
                 }
             }
-            else
+            else        //deals like 1-3 damage if it fails lol
             {
                 if (Un.bossOrEnemy == 0)
                 {
@@ -770,7 +770,7 @@ void specialAttacks(int *attackChoice, int *blocked)
         {
             already[i] = 0;
         }
-        printf("Please enter a different number.\n");
+        printf("Please enter a different number.\n");    //since its looping, it needs to redo the calculations
     }
     } while (specialChoice < 1 || specialChoice > back);
 }
@@ -826,7 +826,7 @@ void Attack(int *blocked)
                 }
             }
         }
-        else if (attackChoice == 1)
+        else if (attackChoice == 1)    //Light Attack
         {
             float lightAttackDamage = round(((rand() % 50) + 80) * Pl.attackMulti);
             int lightBlock = (rand()%100)+1;
@@ -853,7 +853,7 @@ void Attack(int *blocked)
                 bossTurn(blocked);
             }
         }
-        else if (attackChoice == 2)
+        else if (attackChoice == 2)    //Heavy Attack
         {
             float heavyAttackDamage = round(((rand() % 60) + 150) * Pl.attackMulti);
             int heavyBlock = (rand()%100)+1;
@@ -880,17 +880,17 @@ void Attack(int *blocked)
                 bossTurn(blocked);
             }
         }
-        if (attackChoice == 3)
+        if (attackChoice == 3)        //Special Attacks
         {
             attackChoice = 0;
             specialAttacks(&attackChoice,blocked);
         }
-        else if (attackChoice == 4)
+        else if (attackChoice == 4)        //Back
         {
             printf("\n\n\n");
             continue;
         }
-        else if (attackChoice != 1 && attackChoice != 2)
+        else if (attackChoice != 1 && attackChoice != 2)        //Did this little differently to avoid recieving this when typing 3
         {
             printf("%d", attackChoice);
             printf("Please enter a different number.\n");
@@ -911,7 +911,7 @@ void Magic(int *blocked)
     do
     {
         printf("Magic Spells:\n\t\t---Current MP: %d---\n", Pl.MP);
-        for (int i = 1; i <= 4; i++)
+        for (int i = 1; i <= 4; i++)        // i <= 4 due to 4 magic spells available in game
         {
             if (Pl.hasFire == 1 && already[0] == 0)
             {
@@ -944,7 +944,7 @@ void Magic(int *blocked)
         }
             printf("[%d] Back\n",back);
             scanf("%d", &magicMenuChoice);
-            if (Pl.frozen > 1)
+            if (Pl.frozen > 1)        //skips your turn if you're frozen
             {
                 if (magicMenuChoice > 0 && magicMenuChoice < back)
                 {
@@ -991,7 +991,7 @@ void Magic(int *blocked)
                     }
                 }
             }
-            else if (magicMenuChoice == already[0] && already[0] > 0)
+            else if (magicMenuChoice == already[0] && already[0] > 0)        //Fire
             {
                 if (Pl.MP >= Ma.fireMP)
                 {
@@ -1064,7 +1064,7 @@ void Magic(int *blocked)
                     printf("You don't have enough MP to use Fire!\n");
                 }
             }
-            else if (magicMenuChoice == already[1] && already[1] > 0)
+            else if (magicMenuChoice == already[1] && already[1] > 0)        //Blizzard
             {
                 if (Pl.MP >= Ma.blizzardMP)
                 {
@@ -1131,7 +1131,7 @@ void Magic(int *blocked)
                     printf("You don't have enough MP to use Blizzard!\n");
                 }
             }
-            else if (magicMenuChoice == already[2] && already[2] > 0)
+            else if (magicMenuChoice == already[2] && already[2] > 0)        //Thunder
             {
                 if (Pl.MP >= Ma.thunderMP)
                 {
@@ -1194,7 +1194,7 @@ void Magic(int *blocked)
                     printf("You don't have enough MP to use Thunder!\n");
                 }
             }
-            else if (magicMenuChoice == already[3] && already[3] > 0)
+            else if (magicMenuChoice == already[3] && already[3] > 0)        //Aero
             {
                 if (Pl.MP >= Ma.aeroMP)
                 {
@@ -1285,8 +1285,8 @@ void Items(int *blocked)
     do
     {
         printf("Items:\n");
-        //FYI Personally, I think the player should be allowed to use items while frozen (Other than Panacea), What do yall think? ~Roxie
-        for (int i = 1; i <= 3; i++)
+        //FYI Personally, I think the player should be allowed to use items while frozen (Other than Panacea)
+        for (int i = 1; i <= 3; i++)        //i <= 3 due to there being 3 items in game
         {
             if (It.potionC >= 1 && already[0] == 0)
             {
@@ -1309,7 +1309,7 @@ void Items(int *blocked)
         }
         printf("[%d] Back\n", back);
         scanf("%d", &itemMenuChoice);
-        if (itemMenuChoice == already[0] && already[0] > 0)
+        if (itemMenuChoice == already[0] && already[0] > 0)        //Potion ID: 0
         {
             if (It.potionC > 0 && Pl.HP < Pl.maxHP)
             {
@@ -1339,7 +1339,7 @@ void Items(int *blocked)
                 printf("Using a potion now would have no effect!\n");
             }
         }
-        else if (itemMenuChoice == already[1] && already[1] > 0)
+        else if (itemMenuChoice == already[1] && already[1] > 0)        //Ether ID: 1
         {
             if (It.etherC > 0 && Pl.MP < Pl.maxMP)
             {
@@ -1369,11 +1369,11 @@ void Items(int *blocked)
                 printf("Using an ether now would have no effect!\n");
             }
         }
-        else if (itemMenuChoice == already[2] && already[2] > 0)
+        else if (itemMenuChoice == already[2] && already[2] > 0)        //Panacea ID: 2
         {
             if (Pl.burned == 0 && Pl.frozen == 0 && Pl.shocked == 0 && Pl.confused == 0)
             {
-                printf("Using a panacea now would have no effect!\n");
+                printf("Using a panacea now would have no effect!\n");        //tests if the player has no effects, if yes, panacea fails
             }
             else
             {
@@ -1432,31 +1432,31 @@ void Items(int *blocked)
 void mainMenu(int *playing,int *modified, int *titleChoi)
 {
     int battleDone = 0;
-    En.maxHP = En.HP;
-    Bo.maxHP = Bo.HP;
+    En.maxHP = En.HP;        //En.maxHP changes each round
+    Bo.maxHP = Bo.HP;        //Bo.maxHP changes each round
     It.maxPotionCount = It.potionC;
     It.maxEtherCount = It.etherC;   //used for end-game statistics, might add more if we decide to track more
     It.maxPanaceaCount = It.panaceaC;
     int blocked = 0;
-    Un.battles++;
+    Un.battles++;        //these are never repeated in a single battle, only if another battle happens
     do
     {
         Pl.burnDamage = (rand() % 50) + 25;
         blocked = 0;
         int menuChoice = 0;
-        if (Pl.burned == 1)
+        if (Pl.burned == 1)        // * indicator for burn
         {
             printf("\033[0;31m*\033[0m");
         }
-        if (Pl.frozen >= 1)
+        if (Pl.frozen >= 1)    // * indicator for frozen
         {
             printf("\033[0;34m*\033[0m");
         }
-        if (Pl.shocked == 1)
+        if (Pl.shocked == 1)    // * indicator for shock
         {
             printf("\033[0;33m*\033[0m");
-            Pl.shockSucc = (rand() % 100) + 1;
-            if (Pl.shockSucc > 80)
+            Pl.shockSucc = (rand() % 100) + 1;    //calculates shockSucc
+            if (Pl.shockSucc > 80)        //20% chance for attack to miss due to shock
             {
                 Pl.shockSucc = 100;            //makes it 100 so it guarantees that the attack misses, moreso for easier rate modification as needed
             }
@@ -1465,26 +1465,26 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
         {
             Pl.shockSucc = 0;
         }
-        if (Pl.confused == 1)
+        if (Pl.confused == 1)        //* indicator for confuse
         {
             printf("\033[0;35m*\033[0m");
         }
         printf("%s's HP: %d\t||\t", Pl.name, Pl.HP);
         if (Un.bossOrEnemy == 0)
         {
-            if (En.burned == 1)
+            if (En.burned == 1)    //* indicator for burn
             {
                 printf("\033[0;31m*\033[0m");
             }
-            if (En.frozen >= 1)
+            if (En.frozen >= 1)    //* for frozen
             {
                 printf("\033[0;34m*\033[0m");
             }
-            if (En.shocked == 1)
+            if (En.shocked == 1)    //* for shock
             {
                 printf("\033[0;33m*\033[0m");
             }
-            if (En.confused == 1)
+            if (En.confused == 1)    //* for confusion
             {
                 printf("\033[0;35m*\033[0m");
             }
@@ -1492,29 +1492,29 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
         }
         if (Un.bossOrEnemy == 1)
         {
-            if (Bo.burned == 1)
+            if (Bo.burned == 1)    //* indicator for burn
             {
                 printf("\033[0;31m*\033[0m");
             }
-            if (Bo.frozen >= 1)
+            if (Bo.frozen >= 1)//* indicator for frozen
             {
                 printf("\033[0;34m*\033[0m");
             }
-            if (Bo.shocked == 1)
+            if (Bo.shocked == 1)    //* indicator for shock
             {
                 printf("\033[0;33m*\033[0m");
             }
-            if (Bo.confused == 1)
+            if (Bo.confused == 1)    //* indicator for confusion
             {
                 printf("\033[0;35m*\033[0m");
             }
             printf("%s's HP: %d\n", Bo.name, Bo.HP);
         }
-        if (Pl.frozen > 1)
+        if (Pl.frozen > 1)        //message for frozen duration
         {
             printf("\033[0;34mTime until unfrozen: %d turns!\033[0m\n", Pl.frozen);
         }
-        if (Pl.frozen == 1)
+        if (Pl.frozen == 1)        //plurality for turn(s)
         {
             printf("\033[0;34mTime until unfrozen: %d turn!\033[0m\n", Pl.frozen);
         }
@@ -1542,7 +1542,7 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
         {
             battleDone = 1;
         }
-        if (Pl.HP <= 0 || Bo.HP <= 0)
+        if (Pl.HP <= 0 || Bo.HP <= 0)        //this and previous check for Pl.HP, En.HP, and Bo.HP = 0 and sets battleDone = 1 if true
         {
             battleDone = 1;
         }
@@ -1550,7 +1550,7 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
     if (Pl.HP <= 0 && (En.HP <= 0 || Bo.HP <= 0))
     {
         Pl.HP = 0;
-        En.HP = 0;
+        En.HP = 0;        //sets to 0 to avoid displaying negative HP
         Bo.HP = 0;
         printf("The battle has ended in a draw!\n");
         if (Un.inEndless == 1)
@@ -1578,7 +1578,7 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
             printf("You lost to %s...\n", Bo.name);
         }
         Pl.HP = 0;
-        if (Un.inEndless == 1)
+        if (Un.inEndless == 1)        //different message depending on mode in. Notably the lack of It.potionUsed/It.maxPotions
         {
             if (Un.bossOrEnemy == 0)
             {
@@ -1604,16 +1604,16 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
         {
             printf("You have defeated %s!\n\n", Bo.name);
         }
-        int moreExp = (rand() % 500) + 500;
-        moreExp = (moreExp*Pl.expMulti) * (Un.battles * 0.25);
+        int moreExp = (rand() % 500) + 500;        //1000 EXP max
+        moreExp = (moreExp*Pl.expMulti) * (Un.battles * 0.25);        //more EXP if further, decreased if Pl.expMulti < 1
         moreExp = round(moreExp);
         Pl.experience += moreExp; 
-        float moreG = (rand() % 3) + 20;
-        moreG = moreG*(Pl.GMulti*(Un.battles * 0.5));
+        float moreG = (rand() % 3) + 20;        //20-23G base
+        moreG = moreG*(Pl.GMulti*(Un.battles * 0.5));        //more G per round. 
         moreG = round(moreG);
         if ((int)Un.battles % 4 == 0)
         {
-            moreG += 30;
+            moreG += 30;    // +30 G on a base if a boss battle is next
         }
         if (Un.inEndless == 0)
         {
@@ -1629,13 +1629,13 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
                 Pl.G += moreG;
             }
             else
-            {
+            {    //just lacks the +10 G because you're not in 1st round
                 printf("You gained %d experience and %.0fG\n", moreExp, moreG);
                 Pl.G += moreG;
             }
             En.HP = En.maxHP;
             Bo.HP = Bo.maxHP;
-            Shop(playing,modified,titleChoi);
+            Shop(playing,modified,titleChoi);        //takes to Shop in statShop.h
         }
     }
     else
@@ -1673,7 +1673,7 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
                         printf("\n\n\nIt appears you were using modified settings! Would you like to save them for the next battle?\n");
                         printf("[1] Yes\n[2] No\n");
                         scanf("%d", &saveChoice);
-                        if (saveChoice == 1)
+                        if (saveChoice == 1)        //Yes to playing again
                         {
                             Pl.HP = Pl.maxHP;
                             Pl.MP = Pl.maxMP;    //all of these need to be returned to max or else one of these will be 0 (or both HPs or all 3)
@@ -1700,16 +1700,16 @@ void mainMenu(int *playing,int *modified, int *titleChoi)
                 }
                 else if (*modified == 0)
                 {
-                    initialize();
+                    initialize();        //Resets modified values to default
                 }
                 Un.battles = 0;
                 printf("Starting Terminal Battle Again!\n");
                 *playing = 0;
                 continue;
                 }
-                else if (playChoice == 2)
+                else if (playChoice == 2)        //No to playing again
                 {
-                    exit(1);
+                    exit(1); 
                 }
                 else
                 {
@@ -1766,27 +1766,27 @@ void startingGame(int *playing, int *modified, int *titleChoi)
                 break;
             }
             int lineCount = 0;
-            while (fgets(nameLine, sizeof(nameLine), names))
+            while (fgets(nameLine, sizeof(nameLine), names))        //counts the lines
             {
                 lineCount++;
             }
             fseek(names,0,SEEK_SET);
             int currentLine = 0;
             int nameResu = (rand() % lineCount);
-            int nameResu2 = (rand() % lineCount);
+            int nameResu2 = (rand() % lineCount);        //choses a random line to get the name
             int nameResu3 = (rand() % lineCount);
             while (fgets(nameLine,sizeof(nameLine),names))
             {
                 if (currentLine == nameResu)
                 {
-                    nameLine[strcspn(nameLine, "\n")] = '\0';
+                    nameLine[strcspn(nameLine, "\n")] = '\0';    //removes newline character at the end of each name
                     strcpy(Pl.name, nameLine);
                     break;
                 }
                 currentLine++;
             }
             currentLine = 0;
-            rewind(names);              //rewinds the pointer back to the beginning of names.txt
+            rewind(names);              //rewinds the pointer back to the beginning of names.txt, so it can find other names
             while (fgets(nameLine,sizeof(nameLine),names))
             {
                 if (currentLine == nameResu2)
@@ -1798,7 +1798,7 @@ void startingGame(int *playing, int *modified, int *titleChoi)
                 currentLine++;
             }
             currentLine = 0;
-            rewind(names);              //rewinds the pointer back to the beginning of names.txt
+            rewind(names);              //rewinds the pointer back to the beginning of names.txt, so it can find other names
             while (fgets(nameLine,sizeof(nameLine),names))
             {
                 if (currentLine == nameResu3)
@@ -1843,21 +1843,21 @@ int main(void)
         int modified = 0;       //used for if the player modified settings
         int titleChoi = 0;
         initialize();           //this is located in endless.h at the bottom
-    //from testing, the values had to be set to 0 to prevent memory overflow (Specifically in blizzardChance and potionCount, idk why those two specifically ~Roxie)
+    //from testing, the values had to be set to 0 to prevent memory overflow
         srand(time(NULL)); //sets the seed for the random values based on time
         do
-        {
+        {        //Displaying the cool title text
             FILE *fptr;   
             fptr = fopen("title.txt", "r"); 
             char c = fgetc(fptr); 
-            while (c != EOF) 
+            while (c != EOF)     //goes line by line
             { 
                 printf ("%c", c); 
                 c = fgetc(fptr); 
             }
-            fclose(fptr);
+            fclose(fptr);        //dont forget to close it!
             printf("\nSelect a choice! (Type the number corresponding to the option, then press enter)\n");
-            printf("[1] Single Battle\n[2] Endless Battle\n[3] Options\n[4] Exit\n"); //didnt separate this printf statement bc it was so small ~Roxie
+            printf("[1] Single Battle\n[2] Endless Battle\n[3] Options\n[4] Exit\n"); //didnt separate this printf statement bc it was so small
             scanf("%d", &titleChoi);
             if (titleChoi == 1)             //we can do switch case if we want, but it doesn't matter
             {
@@ -1871,25 +1871,25 @@ int main(void)
                     printf("[4] Custom (Determined in Options)\n");
                     printf("[5] Back\n");
                     scanf("%d", &classChoi);
-                    if (classChoi == 1)
+                    if (classChoi == 1)        //Knight
                     {
                         classChoi = 5;
                         knight();
                         startingGame(&playing,&modified,&titleChoi);
                     }
-                    else if (classChoi == 2)
+                    else if (classChoi == 2)    //Mage
                     {
                         classChoi = 5;
                         mage();
                         startingGame(&playing,&modified,&titleChoi);
                     }
-                    else if (classChoi == 3)
+                    else if (classChoi == 3)    //Rogue
                     {
                         classChoi = 5;
                         rogue();
                         startingGame(&playing,&modified,&titleChoi);
                     }
-                    else if (classChoi == 4)
+                    else if (classChoi == 4)        //Custom
                     {
                         classChoi = 5;
                         startingGame(&playing,&modified,&titleChoi);
@@ -1903,7 +1903,7 @@ int main(void)
                     {
                         printf("Please enter a different number.\n");
                     }
-                } while (classChoi < 1 || classChoi > 5);
+                } while (classChoi < 1 || classChoi > 5);        //God mode is moreso in options as a hidden 333rd option in player options
             }
             else if (titleChoi == 2)
             {
@@ -1967,6 +1967,6 @@ int main(void)
                 printf("Please enter a different number.\n");
             }
         } while (titleChoi < 1 || titleChoi > 4);
-    } while (playing != 1);
+    } while (playing != 1);        //Under no circumstances should playing != 1, leaving this loop infinite
     return 0;
 }
