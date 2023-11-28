@@ -8,7 +8,7 @@ void randomizeItems(int selection[],float randoPerc[],float gPrice[],float calcu
 void Items(int *blocked);
 void reCalculate(int selection[],float randoPerc[],float gPrice[],float calculateNew[],int ID[]);
 void learnMoves(int instrucChoi, int instrucOption[]);
-struct Player
+struct Player          //Stats for the player
 {
      char name[100];
      
@@ -25,9 +25,9 @@ struct Player
      int burnDamage;
      int frozen;
      int shocked;
-     int shockSucc;
+     int shockSucc;          //Shock succession chance used in mainMenu
      int confused;
-     int hasFire;
+     int hasFire;          //all has ints are used for if they have a move
      int hasBlizzard;
      int hasThunder;
      int hasAero;
@@ -35,7 +35,7 @@ struct Player
      int hasQuick;
      int hasArs;
      int hasCritHit;
-     float attackMulti;
+     float attackMulti;          //multipliers
      float magicMulti;
 } Pl;
 //common enemy information
@@ -53,7 +53,7 @@ struct Enemy
      
      float enemyDamageMulti;
 } En;
-struct Boss
+struct Boss          //boss information
 {
     char name[100];
     
@@ -85,9 +85,9 @@ struct Magic
      int aeroMiss;
      int confuseChance;
      
-     int curaga;
+     int curaga;          //leftover and unused
 } Ma;
-//amount of each type of potion
+//amount of each type of potion, used amount, and restoration amount
 struct Items
 {
      int potionC;
@@ -102,7 +102,7 @@ struct Items
      int panaceaUsed;
      int maxPanaceaCount;
 } It;
-struct Attacks
+struct Attacks          //attack stats and special attack stats
 {
     int lightBlock;
     int heavyBlock;
@@ -115,19 +115,19 @@ struct Attacks
     int critHitBlock;
     int critHitSuc;
 } At;
-struct Unlocks
+struct Unlocks          //Relating to endless
 {
-    int inEndless;
-    int rounds;
-    double battles;
-    int bossOrEnemy;
+    int inEndless;          //indicator for if you're in endless mode vs single mode
+    int rounds;          //leftover code from testing, unused
+    double battles;          //Round counter
+    int bossOrEnemy;          //indicator for boss or enemy
 } Un;
 void initialize()
 {
         snprintf(Pl.name, sizeof(Pl.name), "Player");
         snprintf(En.name, sizeof(En.name), "Grunt");                //these three are the default names if the player doesn't rename anything
         snprintf(Bo.name, sizeof(Bo.name), "Boss");
-        
+        //default stats for custom (Same as Rogue except 3 of each item)
         Pl.HP = 1000;
         Pl.maxHP = 1000;
         Pl.MP = 100;
@@ -218,7 +218,7 @@ void knight()
 {
     char temp1[100],temp2[100],temp3[100];
     strcpy(temp1,Pl.name);
-    strcpy(temp2,En.name);
+    strcpy(temp2,En.name);          //used to preserve names made in options to avoid them from being overwritten
     strcpy(temp3,Bo.name);
     initialize();
     strcpy(Pl.name,temp1);
@@ -240,7 +240,7 @@ void mage()
 {
     char temp1[100],temp2[100],temp3[100];
     strcpy(temp1,Pl.name);
-    strcpy(temp2,En.name);
+    strcpy(temp2,En.name);     //used to preserve names made in options to avoid them from being overwritten
     strcpy(temp3,Bo.name);
     initialize();
     strcpy(Pl.name,temp1);
@@ -262,7 +262,7 @@ void rogue()
 {
     char temp1[100],temp2[100],temp3[100];
     strcpy(temp1,Pl.name);
-    strcpy(temp2,En.name);
+    strcpy(temp2,En.name);     //used to preserve names made in options to avoid them from being overwritten
     strcpy(temp3,Bo.name);
     initialize();
     strcpy(Pl.name,temp1);
@@ -278,7 +278,13 @@ void rogue()
     It.etherC = 2;
     It.panaceaC = 0;
 }
-void god()
+void god()          //Secret class! (Not really a class moreso settings, ig all classes are like that huh?)
+                    //To select:
+                              //Title screen > Options > Player Options
+                              //Input a number that is not an option (like 0 or 13) 5 times in a row
+                              //You'll get a 333rd option to enable God (OP) mode
+               //Why was this created? Testing purposes when bosses were created and to help speed through battles to test other functions
+                    //such Heat Haze's burn chance and Guillotine move on Bosses
 {
     Pl.HP = 99999;
     Pl.MP = 99999;
