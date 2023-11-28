@@ -3,8 +3,8 @@
 #include "endless.h"
 void Shop(int *playing,int *modified, int *titleChoi)
 {
-    int instrucOption[3] = {0,0,0};
-    int instrucG[3] = {0,0,0};
+    int instrucOption[3] = {0,0,0};        //Max 3 instruction Shop choices
+    int instrucG[3] = {0,0,0};            //Max 3 instruction shop choices
     int shopChoi = 0;
     En.burned = 0;
     En.frozen = 0;
@@ -14,15 +14,15 @@ void Shop(int *playing,int *modified, int *titleChoi)
     Bo.frozen = 0;
     Bo.shocked = 0;
     Bo.confused = 0;
-    int selection[24] = {0};
-    float randoPerc[24] = {0};
-    float gPrice[24] = {0};
-    float calculateNew[24] = {0};
-    int ID[24] = {0};
+    int selection[24] = {0};        //Max 24 stat upgrade choics
+    float randoPerc[24] = {0};        //Max 24 stat upgrade choics
+    float gPrice[24] = {0};        //Max 24 stat upgrade choics
+    float calculateNew[24] = {0};        //Max 24 stat upgrade choics
+    int ID[24] = {0};                //Max 24 stat upgrade choics
     Pl.bench = 1;       //indicator that the player is NOT in a battle (For using items)
-    randomizeItems(selection,randoPerc,gPrice,calculateNew,ID);         //this is for the Stat Shop
+    randomizeItems(selection,randoPerc,gPrice,calculateNew,ID);         //this is for the Stat Shop and to prevent the user from rerolling by exiting and reentering
     printf("End of battle %.0f\n", Un.battles);
-        if ((int)Un.battles % 4 == 0)
+        if ((int)Un.battles % 4 == 0)        //(int) is needed to treat this like an int (its a float)
         {
             Un.bossOrEnemy = 1;
             if ((int)Un.battles > 4)
@@ -45,7 +45,7 @@ void Shop(int *playing,int *modified, int *titleChoi)
     {  
         if (Un.bossOrEnemy == 1)
         {
-             printf("\033[0;31mA strong presence is nearby...\033[0m\n");           //spooky message for when the next round is a boss battle
+             printf("\033[0;31mA strong presence is nearby...\033[0m\n");           //spooky red message for when the next round is a boss battle
         }
         printf("Select a Choice\n");
         printf("[1] Purchase Items\n");
@@ -55,7 +55,7 @@ void Shop(int *playing,int *modified, int *titleChoi)
         printf("[5] Continue to next round\n");
         printf("[6] Quit\n");
         scanf("%d",&shopChoi);
-        if (shopChoi == 1)
+        if (shopChoi == 1)        //item shop in its entirety
         {
             shopChoi = 0;
             printf("\n\n\n");
@@ -70,7 +70,7 @@ void Shop(int *playing,int *modified, int *titleChoi)
                 //printf("[5] 20G: Dire Hit (Increases attack power for 5 turns)\n");                   //cut content!
                 printf("[4] Back\n");
                 scanf("%d", &itemChoi);
-                if (itemChoi == 1)
+                if (itemChoi == 1)        //Potion
                 {
                     itemChoi = 0;
                     if (Pl.G >=  5)
@@ -85,7 +85,7 @@ void Shop(int *playing,int *modified, int *titleChoi)
                         printf("You don't have enough G to purchase a potion!\n");
                     }
                 }
-                else if (itemChoi == 2)
+                else if (itemChoi == 2)        //Ether
                 {
                     itemChoi = 0;
                     if (Pl.G >= 5)
@@ -100,7 +100,7 @@ void Shop(int *playing,int *modified, int *titleChoi)
                         printf("You don't have enough G to purchase an Ether!\n");
                     }
                 }
-                else if (itemChoi == 3)
+                else if (itemChoi == 3)        //Panacea
                 {
                     itemChoi = 0;
                     if (Pl.G >=  7)
@@ -125,49 +125,49 @@ void Shop(int *playing,int *modified, int *titleChoi)
                 }
             } while (itemChoi < 1 || itemChoi > 4);
         }
-        else if (shopChoi == 2)
+        else if (shopChoi == 2)        //Purchase stat upgrades
         {
             shopChoi = 0;
             statShop(&shopChoi, selection, randoPerc, gPrice, calculateNew, ID);
         }
-        else if (shopChoi == 3)
+        else if (shopChoi == 3)        //Purchase new moves and spells
         {
             shopChoi = 0;
             newMoves(instrucOption,instrucG);
         }
-        else if (shopChoi == 4)
+        else if (shopChoi == 4)       //Use current items
         {
             shopChoi = 0;
             printf("Curent HP: %d/%d\t\tCurrent MP: %d/%d\nCurrent Status: ", Pl.HP, Pl.maxHP, Pl.MP, Pl.maxMP);
-            if (Pl.burned == 0 && Pl.frozen == 0 && Pl.shocked == 0 && Pl.confused == 0)
+            if (Pl.burned == 0 && Pl.frozen == 0 && Pl.shocked == 0 && Pl.confused == 0)        //displayers HP, MP, and status
             {
                 printf("No status effects\n");
             }
-        if (Pl.burned == 1)
+        if (Pl.burned == 1)        //Burn Status
         {
             printf("\033[0;31m*Burned \033[0m");
         }
-        if (Pl.frozen >= 1)
+        if (Pl.frozen >= 1)        //Frozen status        (Can be seen if the Enemy or Boss dies of burn while you're frozen)
         {
             printf("\033[0;34m*Frozen \033[0m");
         }
-        if (Pl.shocked == 1)
+        if (Pl.shocked == 1)        //Shock status
         {
             printf("\033[0;33m*Shocked \033[0m");
         }
-        if (Pl.confused == 1)
+        if (Pl.confused == 1)        //Confuse status
         {
             printf("\033[0;35m*Confused \033[0m");
         }
             int *temp = 0;      //a temporary substitute for the *blocked integer as enemyTurn nor bossTurn should be callled if items is called from here
             Items(temp);        //if Pl.bench == 1, then it skips the enemyTurn and bossTurn and comes back here
         }
-        else if (shopChoi == 5)
+        else if (shopChoi == 5)        //Continue to next round
         {
             Pl.bench = 0;
             mainMenu(playing,modified,titleChoi);
         }
-        else if (shopChoi == 6)
+        else if (shopChoi == 6)        //Quit Game
         {
             printf("Ended game on round %.0f\n",Un.battles+1);
             printf("Remaining HP: %d/%d\n",Pl.HP,Pl.maxHP);
@@ -240,7 +240,7 @@ void Shop(int *playing,int *modified, int *titleChoi)
         }
     } while (shopChoi < 1 || shopChoi > 6);
 }
-void changeStats(int selection[],float randoPerc[], float gPrice[], float calculateNew[], int ID[], int *i)
+void changeStats(int selection[],float randoPerc[], float gPrice[], float calculateNew[], int ID[], int *i)        //called after purchasing a stat upgrade
 {
     if (ID[*i] == 1)
     {
@@ -251,7 +251,7 @@ void changeStats(int selection[],float randoPerc[], float gPrice[], float calcul
     else if (ID[*i] == 2)
     {
         Pl.MP = (calculateNew[*i] - Pl.maxMP) + Pl.MP;
-        Pl.maxMP = calculateNew[*i];
+        Pl.maxMP = calculateNew[*i];        //This and the previous are unique and change current HP or MP to accomodate the change
         printf("New Max MP: %d\nNew Current MP: %d\n", Pl.maxMP, Pl.MP);
     }
     else if (ID[*i] == 3)
@@ -364,10 +364,10 @@ void changeStats(int selection[],float randoPerc[], float gPrice[], float calcul
         Ma.aeroMiss = calculateNew[*i];
         printf("New Aero Miss Rate: %d%%\n", Ma.aeroMiss);
     }
-    reCalculate(selection,randoPerc,gPrice,calculateNew,ID);
+    reCalculate(selection,randoPerc,gPrice,calculateNew,ID);        //Needed to redo the value if the same choice appears twice
     
 }
-void randomizeItems(int selection[],float randoPerc[],float gPrice[],float calculateNew[],int ID[])
+void randomizeItems(int selection[],float randoPerc[],float gPrice[],float calculateNew[],int ID[])        //Selects the 4 choices
 {
     for (int i = 1; i <= 4; i++)
     {
@@ -382,7 +382,7 @@ void randomizeItems(int selection[],float randoPerc[],float gPrice[],float calcu
             randoPerc[i] = 0; 
         }
     }
-    reCalculate(selection,randoPerc,gPrice,calculateNew,ID);
+    reCalculate(selection,randoPerc,gPrice,calculateNew,ID);        //calculates all of these choices
 }
 void reCalculate(int selection[],float randoPerc[],float gPrice[],float calculateNew[],int ID[])
 {
@@ -747,7 +747,7 @@ void reCalculate(int selection[],float randoPerc[],float gPrice[],float calculat
         }
     }
 }
-void statShop(int *shopChoi, int selection[], float randoPerc[], float gPrice[], float calculateNew[], int ID[])
+void statShop(int *shopChoi, int selection[], float randoPerc[], float gPrice[], float calculateNew[], int ID[])        //The shop itself
 {
     *shopChoi = 0;
     int statChoice = 0;
@@ -932,7 +932,7 @@ void statShop(int *shopChoi, int selection[], float randoPerc[], float gPrice[],
                 changeStats(selection, randoPerc, gPrice, calculateNew, ID, &i);
             }
         }
-        else if (statChoice == 5)
+        else if (statChoice == 5)        //Reroll
         {
             if (Pl.G < 1)
             {
@@ -945,7 +945,7 @@ void statShop(int *shopChoi, int selection[], float randoPerc[], float gPrice[],
                 printf("Refreshed Stat Upgrade Shop!\n");
             }
         }
-        else if (statChoice == 6)
+        else if (statChoice == 6)    //Back
         {
             printf("\n\n\n");
             return;
@@ -957,7 +957,7 @@ void statShop(int *shopChoi, int selection[], float randoPerc[], float gPrice[],
         }
     } while (statChoice != 6);
 }
-void checkForMoves(int amount, int instrucOption[], int instrucG[])
+void checkForMoves(int amount, int instrucOption[], int instrucG[])        //Decides the choices and checks for dupes
 {
     int failed = 0;
     do
@@ -1015,7 +1015,7 @@ void checkForMoves(int amount, int instrucOption[], int instrucG[])
         }
     } while (failed == 1);
 }
-int unlearnCount()
+int unlearnCount()        //Amount of unlearned moves
 {
     int unlearned = 0;
     if (Pl.hasLucky == 0)
@@ -1052,31 +1052,31 @@ int unlearnCount()
     }
     return unlearned;
 }
-void newMoves(int instrucOption[], int instrucG[])
+void newMoves(int instrucOption[], int instrucG[])        //The shop itself
 {
     int back = 0;
     int unlearned = 0;
     int amount = 0;
     unlearnCount();
-    if (unlearnCount() >= 3)
+    if (unlearnCount() >= 3)        //Displays 3 choices if there are 3+ unknown moves
     {
         amount = 3;
         back = 4;
         checkForMoves(amount,instrucOption,instrucG);
     }
-    else if (unlearnCount() == 2)
+    else if (unlearnCount() == 2)    //Displays 2 choices if there are 2 unknown moves
     {
         back = 3;
         amount = 2;
         checkForMoves(amount,instrucOption,instrucG);
     }
-    else if (unlearnCount() == 1)
+    else if (unlearnCount() == 1)        //displays 1 choice if there is 1 unknown move
     {
         back = 2;
         amount = 1;
         checkForMoves(amount,instrucOption,instrucG);
     }
-    else
+    else        //back always equals 1+ unlearnCount()
     {
         back = 1;
     }
@@ -1084,7 +1084,7 @@ void newMoves(int instrucOption[], int instrucG[])
     do
     {
             printf("Intruction Shop\n");
-            if (unlearnCount() == 0)
+            if (unlearnCount() == 0)        //message if you know everything
             {
                 printf("You have learned all there is to know!\n");
             }
@@ -1184,55 +1184,55 @@ void newMoves(int instrucOption[], int instrucG[])
         }
     } while (instrucChoi < 1 || instrucChoi > back);
 }
-void learnMoves(int instrucChoi, int instrucOption[])
+void learnMoves(int instrucChoi, int instrucOption[])        //The process of learing moves
 {
-    if (instrucOption[instrucChoi] == 1)
+    if (instrucOption[instrucChoi] == 1)        //Lucky Strike
     {
         Pl.hasLucky = 1;
         printf("Successfully learned Lucky Strike!\n");
-        unlearnCount();
+        unlearnCount();        //Recounts the amount unlearned
     }
-    else if (instrucOption[instrucChoi] == 2)
+    else if (instrucOption[instrucChoi] == 2)        //Quickdraw
     {
         Pl.hasQuick = 1;
         printf("Successfully learned Quickdraw!\n");
-        unlearnCount();
+        unlearnCount();        //Recounts the amount unlearned
     }
-    else if (instrucOption[instrucChoi] == 3)
+    else if (instrucOption[instrucChoi] == 3)    //Ars Arcanum
     {
         Pl.hasArs = 1;
         printf("Successfully learned Ars Arcanum!\n");
-        unlearnCount();
+        unlearnCount();        //Recounts the amount unlearned
     }
-    else if (instrucOption[instrucChoi] == 4)
+    else if (instrucOption[instrucChoi] == 4)        //Critical Hit
     {
         Pl.hasCritHit = 1;
         printf("Successfully learned Critical Hit!\n");
-        unlearnCount();
+        unlearnCount();        //Recounts the amount unlearned
     }
-    else if (instrucOption[instrucChoi] == 5)
+    else if (instrucOption[instrucChoi] == 5)    //FIre
     {
         Pl.hasFire = 1;
         printf("Successfully learned Fire!\n");
-        unlearnCount();
+        unlearnCount();        //Recounts the amount unlearned
     }
-    else if (instrucOption[instrucChoi] == 6)
+    else if (instrucOption[instrucChoi] == 6)        //Blizzard
     {
         Pl.hasBlizzard = 1;
         printf("Successfully learned Blizzard!\n");
-        unlearnCount();
+        unlearnCount();        //Recounts the amount unlearned
     }
-    else if (instrucOption[instrucChoi] == 7)
+    else if (instrucOption[instrucChoi] == 7)        //Thunder
     {
         Pl.hasThunder = 1;
         printf("Successfully learned Thunder!\n");
-        unlearnCount();
+        unlearnCount();        //Recounts the amount unlearned
     }
-    else if (instrucOption[instrucChoi] == 8)
+    else if (instrucOption[instrucChoi] == 8)        //Aero
     {
         Pl.hasAero = 1;
         printf("Successfully learned Aero!\n");
-        unlearnCount();
+        unlearnCount();        //Recounts the amount unlearned
     }
 }
 #endif
