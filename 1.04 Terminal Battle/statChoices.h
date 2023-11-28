@@ -542,7 +542,7 @@ void reCalculate(int selection[],float randoPerc[],float gPrice[],float calculat
             calculateNew[i] = round(At.quickdrawMP/(1 + (randoPerc[i]*0.01)));
             if (calculateNew[i] <= 15)       //this is higher to prevent Quickdraw Spam
             {
-                calculateNew[i] = 1;
+                calculateNew[i] = 15;
             }
         }
         else if (selection[i] == 12)     //Decrease Ars Arcanum's MP Cost
