@@ -2,7 +2,7 @@
 #define Options
 #include <stdlib.h>
 #include "endless.h"
-void enemyOptions(int *modified)
+void enemyOptions(int *modified)        //Enemy options
 {
     int enemyChoi = 0;
     do
@@ -16,17 +16,17 @@ void enemyOptions(int *modified)
         printf("[6] Boss Damage Multiplier\t\t(Currently: %.2fx)\n", Bo.bossDamageMulti);
         printf("[7] Back\n");
         scanf("%d",&enemyChoi);
-        if (enemyChoi == 1)
+        if (enemyChoi == 1)    //Enemy Name
         {
             enemyChoi = 0;
             *modified = 1;
-            getchar();
+            getchar();        //removes newline character from enemyChoi
             printf("Enter the enemy's new name: ");
-            fgets(En.name,sizeof(En.name), stdin);
-            En.name[strlen(En.name) - 1] = '\0';
+            fgets(En.name,sizeof(En.name), stdin);        //prompts for enemy name
+            En.name[strlen(En.name) - 1] = '\0';        //removes newline character from enemyname
             printf("Regular Enemy name has succesfully been changed to %s\n", En.name);
         }
-        else if (enemyChoi == 2)
+        else if (enemyChoi == 2)        //Max enemy HP
         {
             enemyChoi = 0;
             *modified = 1;
@@ -34,7 +34,7 @@ void enemyOptions(int *modified)
             scanf("%d", &En.HP);
             printf("Max Enemy HP successfully changed!\n");
         }
-        else if (enemyChoi == 3)
+        else if (enemyChoi == 3)        //Enemy Attack Multiplier
         {
             enemyChoi = 0;
             *modified = 1;
@@ -42,17 +42,17 @@ void enemyOptions(int *modified)
             scanf("%f", &En.enemyDamageMulti);
             printf("Enemy Attack Multiplier successfully changed!\n");
         }
-        else if (enemyChoi == 4)
+        else if (enemyChoi == 4)        //Boss name
         {
             enemyChoi = 0;
             *modified = 1;
-            getchar();
+            getchar();        //removes newline character from enemyChoi
             printf("Enter the boss's new name: ");
-            fgets(Bo.name,sizeof(Bo.name), stdin);
-            Bo.name[strlen(Bo.name) - 1] = '\0';
+            fgets(Bo.name,sizeof(Bo.name), stdin);        //prompts user to enter boss name
+            Bo.name[strlen(Bo.name) - 1] = '\0';        //removes newline character from boss name
             printf("Boss' name has succesfully been changed to %s\n", Bo.name);
         }
-        else if (enemyChoi == 5)
+        else if (enemyChoi == 5)        //Boss HP
         {
             enemyChoi = 0;
             *modified = 1;
@@ -60,7 +60,7 @@ void enemyOptions(int *modified)
             scanf("%d", &Bo.HP);
             printf("Boss HP successfully changed!\n");
         }
-        else if (enemyChoi == 6)
+        else if (enemyChoi == 6)        //Boss damage multiplier
         {
             enemyChoi = 0;
             *modified = 1;
@@ -78,7 +78,7 @@ void enemyOptions(int *modified)
         }
     } while (enemyChoi < 1 || enemyChoi > 7);
 }
-void unlockableOptions(int *modified)
+void unlockableOptions(int *modified)        //For unlockable moves like Ars Arcanum and Thunder
 {
     int unlockChoi = 0;
     do
@@ -86,7 +86,7 @@ void unlockableOptions(int *modified)
         int correctChar = 0;
         printf("Unlockable Options:\n");
         printf("[1] Lucky Strike Unlocked\t\t\t(Currently: ");
-        if (Pl.hasLucky == 1)
+        if (Pl.hasLucky == 1)        //This and 7 others are to display the correct status of a move
         {
             printf("Yes)\n");
         }
@@ -159,9 +159,9 @@ void unlockableOptions(int *modified)
         }
         printf("[9] Back\n");
         scanf("%d",&unlockChoi);
-        if (unlockChoi == 1)
+        if (unlockChoi == 1)            //Lucky Strike Unlock
         {
-            getchar();
+            getchar();        //removes newline character from unlockChoi
             do
             {
                 char decision[999];
@@ -170,13 +170,13 @@ void unlockableOptions(int *modified)
                 printf("Type Y to unlock Lucky Strike, or N to lock Lucky Strike\n");
                 fgets(decision,sizeof(decision),stdin);
                 decision[strlen(decision) - 1] = '\0';
-                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)
+                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)        //tests for Y or y
                 {
                     Pl.hasLucky = 1;
                     printf("Unlocked Lucky Strike!\n");
                     correctChar = 1;
                 }
-                else if (strcmp(decision,"N") == 0 || strcmp(decision,"n") == 0)
+                else if (strcmp(decision,"N") == 0 || strcmp(decision,"n") == 0)        //tests for N or n
                 {
                     Pl.hasLucky = 0;
                     printf("Locked Lucky Strike!\n");
@@ -188,7 +188,7 @@ void unlockableOptions(int *modified)
                 }
             } while (correctChar != 1);
         }
-        else if (unlockChoi == 2)
+        else if (unlockChoi == 2)        //Quickdraw Unlock
         {
             getchar();
             do
@@ -199,14 +199,14 @@ void unlockableOptions(int *modified)
                 printf("Type Y to unlock Quickdraw, or N to lock Quickdraw\n");
                 fgets(decision,sizeof(decision),stdin);
                 decision[strlen(decision) - 1] = '\0';
-                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)
+                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)        //tests for Y or y
                 {
                     Pl.hasQuick = 1;
                     printf("Unlocked Quickdraw!\n");
                     correctChar = 1;
                 }
                 else if (strcmp(decision,"N") == 0 || strcmp(decision,"n") == 0)
-                {
+                {   
                     Pl.hasQuick = 0;
                     printf("Locked Quickdraw!\n");
                     correctChar = 1;
@@ -217,7 +217,7 @@ void unlockableOptions(int *modified)
                 }
             } while (correctChar != 1);
         }
-        else if (unlockChoi == 3)
+        else if (unlockChoi == 3)        //Ars Arcanum Unlock
         {
             getchar();
             do
@@ -228,7 +228,7 @@ void unlockableOptions(int *modified)
                 printf("Type Y to unlock Ars Arcanum, or N to lock Ars Arcanum\n");
                 fgets(decision,sizeof(decision),stdin);
                 decision[strlen(decision) - 1] = '\0';
-                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)
+                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)        //tests for Y or y
                 {
                     Pl.hasArs = 1;
                     printf("Unlocked Ars Arcanum!\n");
@@ -246,7 +246,7 @@ void unlockableOptions(int *modified)
                 }
             } while (correctChar != 1);
         }
-        else if (unlockChoi == 4)
+        else if (unlockChoi == 4)        //Critical Hit Unlock
         {
             getchar();
             do
@@ -257,7 +257,7 @@ void unlockableOptions(int *modified)
                 printf("Type Y to unlock Critical Hit, or N to lock Critical Hit\n");
                 fgets(decision,sizeof(decision),stdin);
                 decision[strlen(decision) - 1] = '\0';
-                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)
+                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)       //tests for Y or y
                 {
                     Pl.hasCritHit = 1;
                     printf("Unlocked Critical Hit!\n");
@@ -275,7 +275,7 @@ void unlockableOptions(int *modified)
                 }
             } while (correctChar != 1);
         }
-        else if (unlockChoi == 5)
+        else if (unlockChoi == 5)        //Fire Unlock
         {
             getchar();
             do
@@ -286,7 +286,7 @@ void unlockableOptions(int *modified)
                 printf("Type Y to unlock Fire, or N to lock Fire\n");
                 fgets(decision,sizeof(decision),stdin);
                 decision[strlen(decision) - 1] = '\0';
-                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)
+                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)    //tests for Y or y
                 {
                     Pl.hasFire = 1;
                     printf("Unlocked Fire!\n");
@@ -304,7 +304,7 @@ void unlockableOptions(int *modified)
                 }
             } while (correctChar != 1);
         }
-        else if (unlockChoi == 6)
+        else if (unlockChoi == 6)        //Blizzard Unlock
         {
             getchar();
             do
@@ -315,7 +315,7 @@ void unlockableOptions(int *modified)
                 printf("Type Y to unlock Blizzard, or N to lock Blizzard\n");
                 fgets(decision,sizeof(decision),stdin);
                 decision[strlen(decision) - 1] = '\0';
-                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)
+                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)    //tests for Y or y
                 {
                     Pl.hasBlizzard = 1;
                     printf("Unlocked Blizzard!\n");
@@ -333,7 +333,7 @@ void unlockableOptions(int *modified)
                 }
             } while (correctChar != 1);
         }
-        else if (unlockChoi == 7)
+        else if (unlockChoi == 7)        //Thunder Unlock
         {
             getchar();
             do
@@ -344,7 +344,7 @@ void unlockableOptions(int *modified)
                 printf("Type Y to unlock Thunder, or N to lock Thunder\n");
                 fgets(decision,sizeof(decision),stdin);
                 decision[strlen(decision) - 1] = '\0';
-                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)
+                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)    //tests for Y or y
                 {
                     Pl.hasThunder = 1;
                     printf("Unlocked Thunder!\n");
@@ -362,7 +362,7 @@ void unlockableOptions(int *modified)
                 }
             } while (correctChar != 1);
         }
-        else if (unlockChoi == 8)
+        else if (unlockChoi == 8)        //Aero Unlock
         {
             getchar();
             do
@@ -373,7 +373,7 @@ void unlockableOptions(int *modified)
                 printf("Type Y to unlock Aero, or N to lock Aero\n");
                 fgets(decision,sizeof(decision),stdin);
                 decision[strlen(decision) - 1] = '\0';
-                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)
+                if (strcmp(decision,"Y") == 0 || strcmp(decision,"y") == 0)    //tests for Y or y
                 {
                     Pl.hasAero = 1;
                     printf("Unlocked Aero!\n");
@@ -414,7 +414,7 @@ void playerOptions(int *modified)
             printf("[333] \033[1;35mEnable OP mode\033[0m\n");
         }
         scanf("%d", &playerChoi);
-        if (playerChoi == 1)
+        if (playerChoi == 1)        //Player Name
         {
             playerChoi = 0;
             *modified = 1;
@@ -424,7 +424,7 @@ void playerOptions(int *modified)
             Pl.name[strlen(Pl.name) - 1] = '\0';
             printf("Your name has succesfully been changed to %s\n", Pl.name);
         }
-        else if (playerChoi == 2)
+        else if (playerChoi == 2)        //Player HP
         {
             playerChoi = 0;
             *modified = 1;
@@ -433,7 +433,7 @@ void playerOptions(int *modified)
             printf("Max Player HP successfully changed!\n");
             Pl.maxHP = Pl.HP;
         }
-        else if (playerChoi == 3)
+        else if (playerChoi == 3)        //Player MP
         {
             playerChoi = 0;
             *modified = 1;
@@ -442,7 +442,7 @@ void playerOptions(int *modified)
             printf("Max Player MP successfully changed!\n");
             Pl.maxMP = Pl.MP;
         }
-        else if (playerChoi == 4)
+        else if (playerChoi == 4)        //Player G
         {
             playerChoi = 0;
             *modified = 1;
@@ -450,13 +450,13 @@ void playerOptions(int *modified)
             scanf("%d", &Pl.G);
             printf("Player G successfully changed!\n");
         }
-        else if (playerChoi == 5)
+        else if (playerChoi == 5)        //Goto unlockableOptions
         {
             playerChoi = 0;
             unlockableOptions(modified);
             
         }
-        else if (playerChoi == 6)
+        else if (playerChoi == 6)        //Unlocks all moves
         {
             playerChoi = 0;
             *modified = 1;
@@ -470,7 +470,7 @@ void playerOptions(int *modified)
             Pl.hasCritHit = 1;
             printf("Successfully unlocked all available moves!\n");
         }
-        else if (playerChoi == 7)
+        else if (playerChoi == 7)        //Locks all moves
         {
             playerChoi = 0;
             *modified = 1;
@@ -484,7 +484,7 @@ void playerOptions(int *modified)
             Pl.hasCritHit = 0;
             printf("Successfully locked all available moves!\n");
         }
-        else if (playerChoi == 333)
+        else if (playerChoi == 333)        //Secret God mode
         {
             playerChoi = 0;
             if (hidden >= 5)
@@ -493,7 +493,7 @@ void playerOptions(int *modified)
                 god();
                 printf("\033[0;31mIt has been done...\033[0m\n");
             }
-            else if (hidden <= 5)
+            else if (hidden <= 5)        //Hidden counter for unlocking god mode! cool messages too!
             {
                 hidden += 1;
                 if (hidden == 1)
@@ -584,7 +584,7 @@ void specialOptions(int *modified)
         printf("[8] Critical Hit Block Rate\t\t(Currently: %d%%)\n", At.critHitBlock);
         printf("[9] Back\n");
         scanf("%d", &specialAttackChoice);
-        if (specialAttackChoice == 1)
+        if (specialAttackChoice == 1)        //Lucky MP
         {
             *modified = 1;
             specialAttackChoice = 0;
@@ -592,7 +592,7 @@ void specialOptions(int *modified)
             scanf("%d", &At.luckyMP);
             printf("Lucky Strike MP Cost successfully changed!\n");
         }
-        else if (specialAttackChoice == 2)
+        else if (specialAttackChoice == 2)        //Lucky Block Rate
         {
             do
             {
@@ -610,7 +610,7 @@ void specialOptions(int *modified)
                 }
             }  while (At.luckyBlock < 0 || At.luckyBlock > 100);
         }
-        else if (specialAttackChoice == 3)
+        else if (specialAttackChoice == 3)        //Quickdraw MP
         {
             specialAttackChoice = 0;
             *modified = 1;
@@ -618,7 +618,7 @@ void specialOptions(int *modified)
             scanf("%d", &At.quickdrawMP);
             printf("Quickdraw MP Cost successfully changed!\n");
         }
-        else if (specialAttackChoice == 4)
+        else if (specialAttackChoice == 4)        //Ars Arcanum MP
         {
             specialAttackChoice = 0;
             *modified = 1;
@@ -626,7 +626,7 @@ void specialOptions(int *modified)
             scanf("%d", &At.arsMP);
             printf("Ars Arcanum MP Cost successfully changed!\n");
         }
-        else if (specialAttackChoice == 5)
+        else if (specialAttackChoice == 5)        //Ars Arcanum BLock Rate
         {
             do
             {
@@ -644,7 +644,7 @@ void specialOptions(int *modified)
                 }
             }  while (At.arsBlock < 0 || At.arsBlock > 100);
         }
-        else if (specialAttackChoice == 6)
+        else if (specialAttackChoice == 6)        //Critical Hit MP
         {
             specialAttackChoice = 0;
             *modified = 1;
@@ -652,7 +652,7 @@ void specialOptions(int *modified)
             scanf("%d", &At.critHitMP);
             printf("Critical Hit MP Cost successfully changed!\n");
         }
-        else if (specialAttackChoice == 7)
+        else if (specialAttackChoice == 7)        //Critical Hit Success Chance (To instakill)
         {
             do
             {
@@ -670,7 +670,7 @@ void specialOptions(int *modified)
                 }
             }  while (At.critHitSuc < 0 || At.critHitSuc > 100);
         }
-        else if (specialAttackChoice == 8)
+        else if (specialAttackChoice == 8)        //Critical Hit Block Rate
         {
             do
             {
@@ -699,7 +699,7 @@ void specialOptions(int *modified)
         }
     } while (specialAttackChoice < 1 || specialAttackChoice > 9);
 }
-void attackOptions(int *modified)
+void attackOptions(int *modified)        //Layout is identical to in-battle menu
 {
     int attackOptionChoice = 0;
     do
@@ -711,7 +711,7 @@ void attackOptions(int *modified)
         printf("[4] Special Attack Options\n");
         printf("[5] Back\n");
         scanf("%d", &attackOptionChoice);
-        if (attackOptionChoice == 1)
+        if (attackOptionChoice == 1)        //Multiplier
         {
             attackOptionChoice = 0;
             *modified = 1;
@@ -719,7 +719,7 @@ void attackOptions(int *modified)
             scanf("%f", &Pl.attackMulti);
             printf("Attack Multiplier successfully changed!\n");
         }
-        else if (attackOptionChoice == 2)
+        else if (attackOptionChoice == 2)        //Light Block Rate
         {
             do
             {
@@ -737,7 +737,7 @@ void attackOptions(int *modified)
                 }
             }  while (At.lightBlock < 0 || At.lightBlock > 100);
         }
-        else if (attackOptionChoice == 3)
+        else if (attackOptionChoice == 3)        //Heavy Block Rate
         {
             do
             {
@@ -755,7 +755,7 @@ void attackOptions(int *modified)
                 }
             }  while (At.heavyBlock < 0 || At.heavyBlock > 100);
         }
-        else if (attackOptionChoice == 4)
+        else if (attackOptionChoice == 4)        //Going to specialOptions
         {
             attackOptionChoice = 0;
             printf("\n\n\n");
@@ -771,8 +771,8 @@ void attackOptions(int *modified)
             printf("Please enter a different number.\n");
         }
     } while (attackOptionChoice < 1 || attackOptionChoice > 5);   
-}
-void magicOptionsTwo(int *modified)
+}   
+void magicOptionsTwo(int *modified)        //a continuation of magicOptions to prevent them all from cluttering the screen at once
 {
     int magicOptionChoiceTwo = 0;
     do
@@ -786,7 +786,7 @@ void magicOptionsTwo(int *modified)
         printf("[7] Aero Miss Chance\t\t\t(Currently: %d%%)\n", Ma.aeroMiss);
         printf("[8] Back\n");
         scanf("%d", &magicOptionChoiceTwo);
-        if (magicOptionChoiceTwo == 1)
+        if (magicOptionChoiceTwo == 1)        //Blizzard miss chance
         {
             do
             {
@@ -804,7 +804,7 @@ void magicOptionsTwo(int *modified)
                 }
             }  while (Ma.blizzardMiss < 0 || Ma.blizzardMiss > 100);
         }
-        else if (magicOptionChoiceTwo == 2)
+        else if (magicOptionChoiceTwo == 2)        //Thunder MP
         {
             magicOptionChoiceTwo = 0;
             *modified = 1;
@@ -812,7 +812,7 @@ void magicOptionsTwo(int *modified)
             scanf("%d", &Ma.thunderMP);
             printf("Thunder MP cost successfully changed!\n");
         }
-        else if (magicOptionChoiceTwo == 3)
+        else if (magicOptionChoiceTwo == 3)        //Thunder Shock Chance
         {
             magicOptionChoiceTwo = 0;
             *modified = 1;
@@ -820,7 +820,7 @@ void magicOptionsTwo(int *modified)
             scanf("%d", &Ma.shockChance);
             printf("Thunder Shock Chance successfully changed!\n");
         }
-        else if (magicOptionChoiceTwo == 4)
+        else if (magicOptionChoiceTwo == 4)        //Thunder Miss Chance
         {
             do
             {
@@ -838,7 +838,7 @@ void magicOptionsTwo(int *modified)
                 }
             }  while (Ma.thunderMiss < 0 || Ma.thunderMiss > 100);
         }
-        else if (magicOptionChoiceTwo == 5)
+        else if (magicOptionChoiceTwo == 5)        //Aero MP
         {
             magicOptionChoiceTwo = 0;
             *modified = 1;
@@ -846,7 +846,7 @@ void magicOptionsTwo(int *modified)
             scanf("%d", &Ma.aeroMP);
             printf("Aero MP cost successfully changed!\n");
         }
-        else if (magicOptionChoiceTwo == 6)
+        else if (magicOptionChoiceTwo == 6)        //Aero Confuse Chance
         {
             magicOptionChoiceTwo = 0;
             *modified = 1;
@@ -854,7 +854,7 @@ void magicOptionsTwo(int *modified)
             scanf("%d", &Ma.confuseChance);
             printf("Aero Confuse Chance successfully changed!\n");
         }
-        else if (magicOptionChoiceTwo == 7)
+        else if (magicOptionChoiceTwo == 7)        //Aero Miss Chance
         {
             do
             {
@@ -894,7 +894,7 @@ void magicOptions(int *modified)
         printf("[7] Next Page\n");
         printf("[8] Back\n");
         scanf("%d", &magicOptionChoice);
-        if (magicOptionChoice == 1)
+        if (magicOptionChoice == 1)        //Magic Multiplier
         {
             magicOptionChoice = 0;
             *modified = 1;
@@ -902,7 +902,7 @@ void magicOptions(int *modified)
             scanf("%f", &Pl.magicMulti);
             printf("Magic Multiplier successfully changed!\n");            
         }
-        else if (magicOptionChoice == 2)
+        else if (magicOptionChoice == 2)        //Fire MP
         {
             magicOptionChoice = 0;
             *modified = 1;
@@ -910,7 +910,7 @@ void magicOptions(int *modified)
             scanf("%d", &Ma.fireMP);
             printf("Fire MP cost successfully changed!\n");
         }
-        else if (magicOptionChoice == 3)
+        else if (magicOptionChoice == 3)        //Fire Burn Chance
         {
             magicOptionChoice = 0;
             *modified = 1;
@@ -918,7 +918,7 @@ void magicOptions(int *modified)
             scanf("%d", &Ma.burnChance);
             printf("Fire Burn Chance successfully changed!\n");
         }
-        else if (magicOptionChoice == 4)
+        else if (magicOptionChoice == 4)        //Fire miss Chance
         {
             do
             {
@@ -936,7 +936,7 @@ void magicOptions(int *modified)
                 }
             }  while (Ma.fireMiss < 0 || Ma.fireMiss > 100);
         }
-        else if (magicOptionChoice == 5)
+        else if (magicOptionChoice == 5)        //Blizzard MP
         {
             magicOptionChoice = 0;
             *modified = 1;
@@ -944,7 +944,7 @@ void magicOptions(int *modified)
             scanf("%d", &Ma.blizzardMP);
             printf("Blizzard MP cost successfully changed!\n");
         }
-        else if (magicOptionChoice == 6)
+        else if (magicOptionChoice == 6)        //Blizzard Freeze Chance
         {
             magicOptionChoice = 0;
             *modified = 1;
@@ -952,7 +952,7 @@ void magicOptions(int *modified)
             scanf("%d", &Ma.freezeChance);
             printf("Blizzard Freeze Chance successfully changed!\n");
         }
-        else if (magicOptionChoice == 7)
+        else if (magicOptionChoice == 7)        //Blizzard Miss Chance
         {
             magicOptionChoice = 0;
             magicOptionsTwo(modified);
@@ -981,7 +981,7 @@ void itemOptions(int *modified)
         printf("[5] Panacea Count\t\t (Currently: %d)\n", It.panaceaC);
         printf("[6] Back\n");
         scanf("%d", &itemOptionChoice);
-        if (itemOptionChoice == 1)
+        if (itemOptionChoice == 1)        ///Potion Count
         {
             itemOptionChoice = 0;
             *modified = 1;
@@ -989,7 +989,7 @@ void itemOptions(int *modified)
             scanf("%d", &It.potionC);
             printf("Potion Count successfully changed!\n");
         }
-        else if (itemOptionChoice == 2)
+        else if (itemOptionChoice == 2)        //Potion Heal Amount
         {
             itemOptionChoice = 0;
             *modified = 1;
@@ -997,7 +997,7 @@ void itemOptions(int *modified)
             scanf("%d", &It.potionHeal);
             printf("Potion Heal Amount successfully changed!\n");
         }
-        else if (itemOptionChoice== 3)
+        else if (itemOptionChoice== 3)        //Ether Count
         {
             itemOptionChoice = 0;
             *modified = 1;
@@ -1005,7 +1005,7 @@ void itemOptions(int *modified)
             scanf("%d", &It.etherC);
             printf("Ether Count successfully changed!\n");
         }
-        else if (itemOptionChoice == 4)
+        else if (itemOptionChoice == 4)        //Ether Restoration Amount
         {
             itemOptionChoice = 0;
             *modified = 1;
@@ -1013,7 +1013,7 @@ void itemOptions(int *modified)
             scanf("%d", &It.etherRest);
             printf("Ether's MP Restoration Amount successfully changed!\n");
         }
-        else if (itemOptionChoice == 5)
+        else if (itemOptionChoice == 5)        //Panacea Count
         {
             itemOptionChoice = 0;
             *modified = 1;
@@ -1032,7 +1032,7 @@ void itemOptions(int *modified)
         }
     } while (itemOptionChoice < 1 || itemOptionChoice > 6);
 }
-void gameOptions(int *modified)
+void gameOptions(int *modified)        //Options to go to Options ;)
 {
     int optionChoice = 0;
     printf("\n\n\n");
@@ -1076,12 +1076,12 @@ void gameOptions(int *modified)
             printf("\n\n\n");
             itemOptions(modified);
         }
-        else if (optionChoice == 6)
+        else if (optionChoice == 6)        //Reset all options
         {
             optionChoice = 0;
             int resetChoi = 0;
             do
-            {
+            {        //Kinda like an "are you sure", not necessary but nice to prevent mistakes
                 printf("Are you sure you want to reset all options? This cannot be undone\n[1] Yes\n[2] No\n");
                 scanf("%d",&resetChoi);
                 if (resetChoi == 1)
